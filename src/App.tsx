@@ -24,10 +24,14 @@ function App() {
 
   useEffect(() => {
     subscribe(
-      { channel: "MessagesChannel", id: uuidv4() },
+      { channel: "GamesChannel" },
       {
         received: (data) => {
-          setMessagesAndScrollDown([...messages, data]);
+          console.log("Received data:", data);
+          // setMessagesAndScrollDown([...messages, data]);
+        },
+        connected: () => {
+          send("get_game", {});
         },
       }
     );
@@ -35,14 +39,16 @@ function App() {
     return () => {
       unsubscribe();
     };
-  }, [subscribe, unsubscribe, guid]);
+  }, []);
 
   useEffect(() => {
     fetchMessages();
   }, []);
 
   const fetchMessages = async () => {
-    const response = await fetch("http://192.168.86.230:3000/messages");
+    const response = await fetch("http://192.168.86.230:3000/messages", {
+      credentials: "include",
+    });
     const data = await response.json();
     setMessagesAndScrollDown(data);
   };

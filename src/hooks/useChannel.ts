@@ -19,35 +19,28 @@ type Callbacks<T> = {
 };
 
 export default function useChannel<ReceivedType>(actionCable: Consumer) {
-  const [connected, setConnected] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
   const channelRef = useRef<Subscription<Consumer> | null>(null);
 
   const subscribe = (data: Data, callbacks: Callbacks<ReceivedType>) => {
     console.log(`useChannel - INFO: Connecting to ${data.channel}`);
     const channel = actionCable.subscriptions.create(data, {
       received: (message: ReceivedType) => {
+        console.log("useChannel - INFO: Received message:", message);
         if (callbacks.received) {
           callbacks.received(message);
         }
       },
       initialized: () => {
-        console.log("useChannel - INFO: Init " + data.channel);
-        setSubscribed(true);
         if (callbacks.initialized) {
           callbacks.initialized();
         }
       },
       connected: () => {
-        console.log("useChannel - INFO: Connected to " + data.channel);
-        setConnected(true);
         if (callbacks.connected) {
           callbacks.connected();
         }
       },
       disconnected: () => {
-        console.log("useChannel - INFO: Disconnected");
-        setConnected(false);
         if (callbacks.disconnected) {
           callbacks.disconnected();
         }
@@ -57,7 +50,6 @@ export default function useChannel<ReceivedType>(actionCable: Consumer) {
   };
 
   const unsubscribe = useCallback(() => {
-    setSubscribed(false);
     if (channelRef.current) {
       console.log(
         "useChannel - INFO: Unsubscribing from " + channelRef.current.identifier
@@ -74,14 +66,6 @@ export default function useChannel<ReceivedType>(actionCable: Consumer) {
   }, [unsubscribe]);
 
   const send = (action: string, payload: {} | undefined) => {
-    if (subscribed && !connected) {
-      throw "useChannel - ERROR: not connected";
-    }
-
-    if (!subscribed) {
-      throw "useChannel - ERROR: not subscribed";
-    }
-
     try {
       channelRef?.current?.perform(action, payload);
     } catch (e) {
