@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import ActionCableContext from "../../context/actionCableContext";
+import ActionCableContext from "../context/actionCableContext";
+
+import { PlayerBadge } from "./PlayerBadge";
 
 export const Game = () => {
   const actionCableContext = useContext(ActionCableContext);
@@ -54,28 +56,26 @@ export const Game = () => {
   // Live Game
   return (
     <div>
-      <div>{game.players[0]}</div>
-      {game.cards?.map((card: any, index) => (
-        <div
-          key={index}
-          id={card.id}
-          style={{
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            padding: "10px",
-            width: "50px",
-            height: "75px",
-            backgroundColor: card.flipped ? "#686868" : "#fff",
-          }}
-          data-flipped={card.flipped}
-          onClick={flipCard}
-        >
-          {card.card?.number && (
-            <div style={{ fontWeight: "bold" }}>{card.card.number}</div>
-          )}
-        </div>
-      ))}
-      <div>{game.players[1]}</div>
+      <PlayerBadge playerId={game.players[0]} />
+      <div className="grid grid-cols-4 gap-4">
+        {game.cards?.map((card: any, index: number) => (
+          <div
+            key={index}
+            id={card}
+            className="w-20 h-30 rounded-md"
+            style={{
+              backgroundColor: card.flipped ? "#686868" : "#fff",
+            }}
+            data-flipped={card.flipped}
+            onClick={flipCard}
+          >
+            {card.card?.number && (
+              <div style={{ fontWeight: "bold" }}>{card.card.number}</div>
+            )}
+          </div>
+        ))}
+      </div>
+      <PlayerBadge playerId={game.players[1]} />
     </div>
   );
 };

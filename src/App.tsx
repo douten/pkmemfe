@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Game } from "./components/Game/Game";
+import { Game } from "./components/Game";
 import useActionCable from "./hooks/useActionCable";
 import useChannel from "./hooks/useChannel";
 import ActionCableContext from "./context/actionCableContext";
@@ -22,6 +22,9 @@ function App() {
   const { actionCable } = useActionCable(`ws://192.168.86.230:3000/cable`);
   const { subscribe, unsubscribe, send } = useChannel<any>(actionCable);
 
+  // accessible across all children components
+  const contextValue = { playerId, send, setPlayerId, subscribe, unsubscribe };
+
   useEffect(() => {
     getPlayerId();
   }, []);
@@ -37,7 +40,7 @@ function App() {
 
   return (
     <>
-      <ActionCableContext.Provider value={{ subscribe, unsubscribe, send }}>
+      <ActionCableContext.Provider value={contextValue}>
         {!isPlaying ? (
           <>
             <h1>Welcome {playerId?.toUpperCase()}</h1>
