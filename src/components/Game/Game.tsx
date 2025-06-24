@@ -1,7 +1,34 @@
-import styles from "./DoroList.module.scss";
-import type { GameInterface } from "../../components/types";
+import { useContext, useEffect, useState } from "react";
+import ActionCableContext from "../../context/actionCableContext";
 
-export const Game = ({ game }: { game: GameInterface }) => {
+export const Game = () => {
+  const actionCableContext = useContext(ActionCableContext);
+  if (!actionCableContext) {
+    throw new Error("ActionCableContext is not available");
+  }
+
+  const { subscribe, unsubscribe, send } = actionCableContext;
+  const [game, setGame] = useState<any>(null);
+
+  useEffect(() => {
+    subscribe(
+      { channel: "GamesChannel" },
+      {
+        received: (data) => {
+          console.log("Received data:", data);
+          setGame({ ...data.game });
+        },
+        connected: () => {
+          send("get_game", {});
+        },
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
     // if (e.currentTarget.dataset.flipped === "true") return;
     // send("flip_card", {
@@ -11,16 +38,23 @@ export const Game = ({ game }: { game: GameInterface }) => {
   };
 
   // Match Making Phase
-  if (game.players.length < 2) {
+  if (!game) {
+    return <div>No players available</div>;
+  }
+
+  if (game.players.length === 1) {
     return (
-      <div className={styles["doro-list-wrapper"]}>No players available</div>
+      <div>
+        <div>{game.players[0].guestId}</div>
+        <div>Waiting for another player...</div>
+      </div>
     );
   }
 
   // Live Game
   return (
-    <div className={styles["doro-list-wrapper"]}>
-      <div>{game.players[0].guestId}</div>
+    <div>
+      <div>{game.players[0]}</div>
       {game.cards?.map((card: any, index) => (
         <div
           key={index}
@@ -41,7 +75,7 @@ export const Game = ({ game }: { game: GameInterface }) => {
           )}
         </div>
       ))}
-      <div>{game.players[1].guestId}</div>
+      <div>{game.players[1]}</div>
     </div>
   );
 };
