@@ -33,11 +33,12 @@ export const Game = () => {
   }, []);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
-    // if (e.currentTarget.dataset.flipped === "true") return;
-    // send("flip_card", {
-    //   game_card_id: e.currentTarget.id,
-    //   player_id: playerId,
-    // });
+    if (e.currentTarget.dataset.flipped === "true") return;
+
+    send("flip_card", {
+      game_card_id: e.currentTarget.id,
+      player_id: playerId,
+    });
   };
 
   // Match Making Phase
@@ -90,7 +91,7 @@ export const Game = () => {
         {game.cards?.map((card: any, index: number) => (
           <div
             key={index}
-            id={card}
+            id={card.id}
             className="w-20 h-30 rounded-md"
             style={{
               backgroundColor: card.flipped ? "#686868" : "#fff",
@@ -98,8 +99,18 @@ export const Game = () => {
             data-flipped={card.flipped}
             onClick={flipCard}
           >
-            {card.card?.number && (
-              <div style={{ fontWeight: "bold" }}>{card.card.number}</div>
+            {card.flipped ? (
+              <img
+                src={card.image_url}
+                alt="Card"
+                className="w-full h-full rounded-md"
+              />
+            ) : (
+              <img
+                src="https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg"
+                alt="Card Back"
+                className="w-full h-full rounded-md"
+              />
             )}
           </div>
         ))}
