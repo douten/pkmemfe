@@ -5,6 +5,8 @@ import useActionCable from "./hooks/useActionCable";
 import useChannel from "./hooks/useChannel";
 import ActionCableContext from "./context/actionCableContext";
 
+import { PlayerBadge } from "./components/PlayerBadge";
+
 // const ws = new WebSocket("ws://192.168.86.230:3000/cable");
 
 interface Message {
@@ -43,7 +45,10 @@ function App() {
       <ActionCableContext.Provider value={contextValue}>
         {!isPlaying ? (
           <>
-            <h1>Welcome {playerId?.toUpperCase()}</h1>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h2 className="text-3xl">Welcome</h2>{" "}
+              {playerId && <PlayerBadge playerId={playerId} />}
+            </div>
 
             <button
               onClick={() => {
