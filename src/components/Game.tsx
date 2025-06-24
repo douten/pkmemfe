@@ -11,6 +11,7 @@ export const Game = () => {
 
   const { subscribe, unsubscribe, send, playerId } = context;
   const [game, setGame] = useState<any>(null);
+  const [canFlip, setCanFlip] = useState(false);
   const opponentId = game?.players.filter((p: any) => p !== playerId)[0];
 
   useEffect(() => {
@@ -19,7 +20,16 @@ export const Game = () => {
       {
         received: (data) => {
           console.log("Received data:", data);
-          setGame({ ...data.game });
+
+          if (data.game) {
+            setGame({ ...data.game });
+          }
+
+          if (data.can_flip) {
+            const canFlip = data.can_flip[playerId];
+            console.log("Can flip:", canFlip);
+            setCanFlip(canFlip);
+          }
         },
         connected: () => {
           send("get_game", {});
@@ -33,7 +43,7 @@ export const Game = () => {
   }, []);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.flipped === "true") return;
+    if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;
 
     send("flip_card", {
       game_card_id: e.currentTarget.id,
