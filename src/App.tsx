@@ -24,60 +24,52 @@ function App() {
   const { actionCable } = useActionCable(`ws://192.168.86.230:3000/cable`);
   const { subscribe, unsubscribe, send } = useChannel<any>(actionCable);
 
-  useEffect(() => {
-    if (!playerId) return;
-    subscribe(
-      { channel: "GamesChannel" },
-      {
-        received: (data) => {
-          console.log("Received data:", data);
-          setGame(data.game);
-          setCards([...data.cards]);
-          setOpponentId(data.opponent || null);
-        },
-        connected: () => {
-          send("get_game", {});
-        },
-      }
-    );
+  // useEffect(() => {
+  //   if (!playerId) return;
+  //   subscribe(
+  //     { channel: "GamesChannel" },
+  //     {
+  //       received: (data) => {
+  //         console.log("Received data:", data);
+  //         setGame(data.game);
+  //         setCards([...data.cards]);
+  //         setOpponentId(data.opponent || null);
+  //       },
+  //       connected: () => {
+  //         send("get_game", {});
+  //       },
+  //     }
+  //   );
 
-    return () => {
-      unsubscribe();
-    };
-  }, [playerId]);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [playerId]);
 
-  useEffect(() => {
-    getPlayerId();
-  }, []);
+  // useEffect(() => {
+  //   getPlayerId();
+  // }, []);
 
-  const getPlayerId = async () => {
-    const response = await fetch("http://192.168.86.230:3000/players/get_id", {
-      credentials: "include",
-    });
-    const data = await response.json();
-    console.log("Player ID:", data);
-    setPlayerId(data.id);
-  };
+  // const getPlayerId = async () => {
+  //   const response = await fetch("http://192.168.86.230:3000/players/get_id", {
+  //     credentials: "include",
+  //   });
+  //   const data = await response.json();
+  //   console.log("Player ID:", data);
+  //   setPlayerId(data.id);
+  // };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const message = formData.get("message") as string;
-    if (!message) return;
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const form = e.target as HTMLFormElement;
+  //   const formData = new FormData(form);
+  //   const message = formData.get("message") as string;
+  //   if (!message) return;
 
-    form.reset();
+  //   form.reset();
 
-    send("receive", { body: message, playerId });
-  };
-
-  const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.flipped === "true") return;
-    send("flip_card", {
-      game_card_id: e.currentTarget.id,
-      player_id: playerId,
-    });
-  };
+  //   send("receive", { body: message, playerId });
+  // };
 
   return (
     <>

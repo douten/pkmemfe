@@ -1,0 +1,39 @@
+.doro-list-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.doro-list {
+  border: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--block-gap-medium);
+  margin: var(--block-margin-large);
+}
+
+.doro-line-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+
+  padding: var(--block-padding-large);
+  border-radius: var(--block-radius-medium);
+  border: 0;
+  background-color: var(--color-background-block);
+  color: #ffffff;
+  transition: background-color 0.3s;
+  font-size: 44px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-background-block-hover);
+  }
+}
+
+// media query  for smaller screens
+@media (max-width: 480px) {
+  .doro-list {
+    margin: var(--block-margin-mobile-medium);
+  }
+}
