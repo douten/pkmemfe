@@ -4,13 +4,14 @@ import ActionCableContext from "../context/actionCableContext";
 import { PlayerBadge } from "./PlayerBadge";
 
 export const Game = () => {
-  const actionCableContext = useContext(ActionCableContext);
-  if (!actionCableContext) {
+  const context = useContext(ActionCableContext);
+  if (!context) {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send } = actionCableContext;
+  const { subscribe, unsubscribe, send, playerId } = context;
   const [game, setGame] = useState<any>(null);
+  const opponentId = game?.players.filter((p: any) => p !== playerId)[0];
 
   useEffect(() => {
     subscribe(
@@ -41,14 +42,28 @@ export const Game = () => {
 
   // Match Making Phase
   if (!game) {
-    return <div>No players available</div>;
+    return <div>Creating Game...</div>;
   }
 
-  if (game.players.length === 1) {
+  if (!opponentId || game.state === "matching") {
     return (
       <div>
-        <div>{game.players[0].guestId}</div>
+        <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
         <div>Waiting for another player...</div>
+      </div>
+    );
+  }
+
+  if (game.state === "finished") {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <div>Game {game.id} </div>
+        <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
+        {game?.winner === playerId ? (
+          <div className="text-green-500">Congratulations You won!</div>
+        ) : (
+          <div className="text-red-500">and a ooopp, You lost!</div>
+        )}
       </div>
     );
   }
@@ -56,7 +71,21 @@ export const Game = () => {
   // Live Game
   return (
     <div>
-      <PlayerBadge playerId={game.players[0]} />
+      <div className="flex items-center gap-4 mb-4 justify-center">
+        <span>game{game.id}:</span>
+        {playerId && <PlayerBadge playerId={playerId} />}
+        <span>vs</span>
+        {opponentId && <PlayerBadge playerId={opponentId} />}
+      </div>
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+        onClick={() => {
+          send("concede", {});
+        }}
+      >
+        Concede
+      </button>
+
       <div className="grid grid-cols-4 gap-4">
         {game.cards?.map((card: any, index: number) => (
           <div
@@ -75,7 +104,6 @@ export const Game = () => {
           </div>
         ))}
       </div>
-      <PlayerBadge playerId={game.players[1]} />
     </div>
   );
 };
