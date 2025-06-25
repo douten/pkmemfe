@@ -9,10 +9,12 @@ export const Game = () => {
     throw new Error("ActionCableContext is not available");
   }
 
+  const RESET_DELAY = 1300; // 1 second delay for resetting the game state
+
   const { subscribe, unsubscribe, send, playerId } = context;
   const [game, setGame] = useState<any>(null);
   const [canFlip, setCanFlip] = useState(false);
-  const opponentId = game?.players.filter((p: any) => p !== playerId)[0];
+  const opponentId = game?.players.filter((p: any) => p.id !== playerId)[0].id;
 
   useEffect(() => {
     subscribe(
@@ -21,14 +23,34 @@ export const Game = () => {
         received: (data) => {
           console.log("Received data:", data);
 
+          const reset = data.reset || false;
+
           if (data.game) {
-            setGame({ ...data.game });
+            // setGame({ ...data.game });
+
+            if (reset) {
+              setTimeout(() => {
+                setGame({ ...data.game });
+              }, RESET_DELAY);
+            } else {
+              setGame({ ...data.game });
+            }
           }
 
           if (data.can_flip) {
             const canFlip = data.can_flip[playerId];
+
+            // if reset then setCanFlip with interval of 3 seconds
+            if (reset) {
+              setTimeout(() => {
+                setCanFlip(canFlip);
+              }, RESET_DELAY);
+            } else {
+              // if not reset then just set canFlip
+              setCanFlip(canFlip);
+            }
+
             console.log("Can flip:", canFlip);
-            setCanFlip(canFlip);
           }
         },
         connected: () => {
@@ -82,20 +104,29 @@ export const Game = () => {
   // Live Game
   return (
     <div>
+      <span>game{game.id}:</span>
+
       <div className="flex items-center gap-4 mb-4 justify-center">
-        <span>game{game.id}:</span>
         {playerId && <PlayerBadge playerId={playerId} />}
-        <span>vs</span>
+        {/* score badge */}
+        <span className="text-xs text-gray-500">
+          {game.players.find((p: any) => p.id === playerId)?.score || 0}
+        </span>
+        <span className="text-xs text-gray-500">vs</span>
+        <span className="text-xs text-gray-500">
+          {game.players.find((p: any) => p.id !== playerId)?.score || 0}
+        </span>
         {opponentId && <PlayerBadge playerId={opponentId} />}
       </div>
-      <button
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
-        onClick={() => {
-          send("concede", {});
-        }}
-      >
-        Concede
-      </button>
+      <div className="flex items-center gap-4 mb-4 justify-center">
+        <div>
+          {canFlip ? (
+            <span className="text-green-500">your turn..</span>
+          ) : (
+            <span className="text-red-500">opponent's turn...</span>
+          )}
+        </div>
+      </div>
 
       <div className="grid grid-cols-4 gap-4">
         {game.cards?.map((card: any, index: number) => (
@@ -125,6 +156,14 @@ export const Game = () => {
           </div>
         ))}
       </div>
+      <button
+        className="mb-4 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+        onClick={() => {
+          send("concede", {});
+        }}
+      >
+        Concede
+      </button>
     </div>
   );
 };
