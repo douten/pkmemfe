@@ -9,12 +9,16 @@ export const Game = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const RESET_DELAY = 1300; // 1 second delay for resetting the game state
-
   const { subscribe, unsubscribe, send, playerId } = context;
   const [game, setGame] = useState<any>(null);
   const [canFlip, setCanFlip] = useState(false);
-  const opponentId = game?.players.filter((p: any) => p.id !== playerId)[0].id;
+  const [opponentId, setOpponentId] = useState<string | null>(null);
+
+  const updateGameStates = (game: any) => {
+    setGame({ ...game });
+    setCanFlip(game.players.find((p: any) => p.id === playerId)?.can_flip);
+    setOpponentId(game.players.find((p: any) => p.id !== playerId)?.id || "");
+  };
 
   useEffect(() => {
     subscribe(
@@ -23,34 +27,15 @@ export const Game = () => {
         received: (data) => {
           console.log("Received data:", data);
 
-          const reset = data.reset || false;
-
+          const delay = data.delay || 0;
           if (data.game) {
-            // setGame({ ...data.game });
-
-            if (reset) {
+            if (delay) {
               setTimeout(() => {
-                setGame({ ...data.game });
-              }, RESET_DELAY);
+                updateGameStates(data.game);
+              }, delay);
             } else {
-              setGame({ ...data.game });
+              updateGameStates(data.game);
             }
-          }
-
-          if (data.can_flip) {
-            const canFlip = data.can_flip[playerId];
-
-            // if reset then setCanFlip with interval of 3 seconds
-            if (reset) {
-              setTimeout(() => {
-                setCanFlip(canFlip);
-              }, RESET_DELAY);
-            } else {
-              // if not reset then just set canFlip
-              setCanFlip(canFlip);
-            }
-
-            console.log("Can flip:", canFlip);
           }
         },
         connected: () => {
@@ -128,12 +113,12 @@ export const Game = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-2">
         {game.cards?.map((card: any, index: number) => (
           <div
             key={index}
             id={card.id}
-            className="w-20 h-30 rounded-md"
+            className="w-23 h-33 rounded-md"
             style={{
               backgroundColor: card.flipped ? "#686868" : "#fff",
             }}
