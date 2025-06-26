@@ -13,6 +13,7 @@ export const Lobby = () => {
   const { subscribe, unsubscribe, send, playerId } = context;
   const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
   const [gameId, setGameId] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [opponentId, setOpponentId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,9 +30,15 @@ export const Lobby = () => {
           if (data.game_id) {
             // delay 1.5s before setting gameId
             setTimeout(() => {
-              unsubscribe();
+              send("join_game", {
+                game_id: data.game_id,
+              });
               setGameId(data.game_id);
             }, 1500);
+          }
+
+          if (data.is_playing) {
+            setIsPlaying(data.is_playing);
           }
 
           if (data.active_players_count) {
@@ -40,6 +47,12 @@ export const Lobby = () => {
         },
         connected: () => {
           send("get_lobby_stats", {});
+        },
+        disconnected: () => {
+          console.log("LobbyChannel disconnected", { gameId });
+          if (gameId) {
+            setIsPlaying(true);
+          }
         },
       }
     );
@@ -51,7 +64,7 @@ export const Lobby = () => {
 
   // Match Making Phase
 
-  return gameId && opponentId ? (
+  return gameId && isPlaying ? (
     <Game gameId={gameId} />
   ) : (
     <div className="flex flex-col items-center justify-center gap-4 p-4">
