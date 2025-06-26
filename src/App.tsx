@@ -1,10 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Game } from "./components/Game";
 import useActionCable from "./hooks/useActionCable";
 import useChannel from "./hooks/useChannel";
 import ActionCableContext from "./context/actionCableContext";
 
+import { Lobby } from "./components/Lobby";
 import { PlayerBadge } from "./components/PlayerBadge";
 
 // const ws = new WebSocket("ws://192.168.86.230:3000/cable");
@@ -36,7 +36,6 @@ function App() {
       credentials: "include",
     });
     const data = await response.json();
-    console.log("Player ID:", data);
     setPlayerId(data.id);
   };
 
@@ -52,6 +51,11 @@ function App() {
 
             <button
               onClick={() => {
+                if (!playerId) {
+                  alert("No player ID found. Please try again.");
+                  getPlayerId();
+                  return;
+                }
                 setIsPlaying(true);
               }}
             >
@@ -59,7 +63,7 @@ function App() {
             </button>
           </>
         ) : (
-          <Game />
+          <Lobby />
         )}
       </ActionCableContext.Provider>
     </>

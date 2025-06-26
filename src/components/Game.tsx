@@ -3,7 +3,7 @@ import ActionCableContext from "../context/actionCableContext";
 
 import { PlayerBadge } from "./PlayerBadge";
 
-export const Game = () => {
+export const Game = ({ gameId }: { gameId: string }) => {
   const context = useContext(ActionCableContext);
   if (!context) {
     throw new Error("ActionCableContext is not available");
@@ -11,8 +11,8 @@ export const Game = () => {
 
   const { subscribe, unsubscribe, send, playerId } = context;
   const [game, setGame] = useState<any>(null);
-  const [canFlip, setCanFlip] = useState(false);
   const [opponentId, setOpponentId] = useState<string | null>(null);
+  const [canFlip, setCanFlip] = useState(false);
 
   const updateGameStates = (game: any) => {
     setGame({ ...game });
@@ -21,8 +21,9 @@ export const Game = () => {
   };
 
   useEffect(() => {
+    if (!gameId) return;
     subscribe(
-      { channel: "GamesChannel" },
+      { channel: "GamesChannel", game_id: gameId },
       {
         received: (data) => {
           console.log("Received data:", data);
@@ -47,7 +48,7 @@ export const Game = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [gameId]);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;
@@ -61,15 +62,6 @@ export const Game = () => {
   // Match Making Phase
   if (!game) {
     return <div>Creating Game...</div>;
-  }
-
-  if (!opponentId || game.state === "matching") {
-    return (
-      <div>
-        <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
-        <div>Waiting for another player...</div>
-      </div>
-    );
   }
 
   if (game.state === "finished") {
@@ -118,7 +110,7 @@ export const Game = () => {
           <div
             key={index}
             id={card.id}
-            className="w-23 h-33 rounded-md"
+            className="w-22 h-31 rounded-md"
             style={{
               backgroundColor: card.flipped ? "#686868" : "#fff",
             }}
@@ -141,6 +133,7 @@ export const Game = () => {
           </div>
         ))}
       </div>
+
       <button
         className="mb-4 px-2 py-1 bg-blue-500 text-white rounded text-xs"
         onClick={() => {
