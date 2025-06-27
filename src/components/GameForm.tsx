@@ -4,6 +4,22 @@ import { useNavigate } from "react-router";
 export const GameForm = ({ player }: { player: PlayerInterface }) => {
   const navigate = useNavigate();
 
+  const concedeGame = async () => {
+    if (!player.game_id) return;
+
+    const response = await fetch(
+      `http://192.168.86.230:3000/games/${player.game_id}/concede`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    const data = await response.json();
+    if (data.status === "success") {
+      navigate("/");
+    }
+  };
+
   return (
     <>
       {player.game_id ? (
@@ -11,14 +27,14 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
           <div>You were in game {player.game_id} </div>
           <button
             onClick={() => {
-              // go to game url
+              navigate(`/game/${player.game_id}`);
             }}
           >
             Continue Game
           </button>
           <button
             onClick={() => {
-              // concede game logic
+              concedeGame();
             }}
           >
             Concede Game
