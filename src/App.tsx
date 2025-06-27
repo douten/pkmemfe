@@ -1,12 +1,15 @@
-import "./App.css";
-import useChannel from "./hooks/useChannel";
-import useActionCable from "./hooks/useActionCable";
-import GlobalContext from "./context/globalContext";
 import { Routes, Route, BrowserRouter } from "react-router";
 import { useState } from "react";
 
-import { Home, Lobby } from "./components/pages/index";
-import type { GameInterface, PlayerInterface } from "./components/types";
+// hooks & context
+import useChannel from "./hooks/useChannel";
+import useActionCable from "./hooks/useActionCable";
+import GlobalContext from "./context/globalContext";
+
+// components & styling
+import "./App.css";
+import { Home, Lobby, Game } from "./components/pages/index";
+import type { PlayerInterface } from "./components/types";
 
 function App() {
   // START: CONTEXT SETUP
@@ -36,7 +39,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lobby" element={<Lobby />} />
-          {/* <Route path="/game/:id" element={<Game />} /> */}
+          <Route path="/game/:id" element={<Game />} />
         </Routes>
       </GlobalContext.Provider>
     </BrowserRouter>

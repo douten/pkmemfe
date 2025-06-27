@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 
 import GlobalContext from "./context/globalContext";
 
-import { Lobby } from "./components/Lobby";
+import { Lobby } from "./components/pages/Lobby";
 import { PlayerBadge } from "./components/PlayerBadge";
-import { Game } from "./components/Game";
+import { Game } from "./components/pages/Game";
 
 // const ws = new WebSocket("ws://192.168.86.230:3000/cable");
 

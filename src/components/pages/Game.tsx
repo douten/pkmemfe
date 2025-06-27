@@ -1,18 +1,32 @@
 import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../context/globalContext";
+import { useParams, useNavigate } from "react-router";
 
-import { PlayerBadge } from "./PlayerBadge";
+// context
+import GlobalContext from "../../context/globalContext";
 
-export const Game = ({ gameId }: { gameId: string }) => {
+// components
+import { PlayerBadge } from "../PlayerBadge";
+
+export const Game = () => {
+  const { id: gameId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  if (!gameId) {
+    return <div>Game ID is required</div>;
+  }
+
   const context = useContext(GlobalContext);
   if (!context) {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send, playerId } = context;
+  const { subscribe, unsubscribe, send, player } = context;
   const [game, setGame] = useState<any>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [canFlip, setCanFlip] = useState(false);
+  const [gameError, setGameError] = useState<string | null>(null);
+
+  const playerId = player?.id;
 
   const updateGameStates = (game: any) => {
     setGame({ ...game });
@@ -23,24 +37,29 @@ export const Game = ({ gameId }: { gameId: string }) => {
   useEffect(() => {
     if (!gameId) return;
     subscribe(
-      { channel: "GamesChannel", game_id: gameId },
+      { channel: "GamesChannel", id: gameId },
       {
         received: (data) => {
           console.log("Received data:", data);
 
-          const delay = data.delay || 0;
-          if (data.game) {
-            if (delay) {
+          const { games_channel: games_channel_response } = data;
+
+          const delay = games_channel_response.delay || 0;
+          const game = games_channel_response.game;
+
+          if (game) {
+            if (delay > 0) {
               setTimeout(() => {
-                updateGameStates(data.game);
+                updateGameStates(game);
               }, delay);
             } else {
-              updateGameStates(data.game);
+              updateGameStates(game);
             }
           }
         },
-        connected: () => {
-          send("get_game", {});
+        rejected: () => {
+          console.error("GameChannel rejected");
+          setGameError("Game not found or you are not allowed to join.");
         },
       }
     );
@@ -59,9 +78,26 @@ export const Game = ({ gameId }: { gameId: string }) => {
     });
   };
 
-  // Match Making Phase
+  // Can't Find Game State
+  if (gameError) {
+    return (
+      <div className="text-red-500">
+        {gameError}
+
+        <button
+          className="mt-2 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
   if (!game) {
-    return <div>Creating Game...</div>;
+    return <div>Getting Game...</div>;
   }
 
   if (game.state === "finished") {

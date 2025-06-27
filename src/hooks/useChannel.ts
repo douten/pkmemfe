@@ -18,6 +18,7 @@ type Callbacks<T> = {
   initialized?: () => void;
   connected?: () => void;
   disconnected?: () => void;
+  rejected?: () => void;
 };
 
 interface ActionCableResponseInterface {
@@ -28,8 +29,9 @@ interface ActionCableResponseInterface {
     is_playing?: boolean;
   };
   games_channel: {
-    game: GameInterface;
-    delay: number;
+    game?: GameInterface;
+    delay?: number;
+    error?: string;
   };
 }
 
@@ -63,6 +65,11 @@ export default function useChannel(actionCable: Consumer) {
           callbacks.disconnected();
         }
       },
+      rejected: () => {
+        if (callbacks.rejected) {
+          callbacks.rejected();
+        }
+      },
     });
     channelRef.current = channel;
   };
@@ -83,7 +90,7 @@ export default function useChannel(actionCable: Consumer) {
     };
   }, [unsubscribe]);
 
-  const send = (action: string, payload: {} | undefined) => {
+  const send = (action: string, payload?: {} | undefined) => {
     try {
       channelRef?.current?.perform(action, payload);
     } catch (e) {

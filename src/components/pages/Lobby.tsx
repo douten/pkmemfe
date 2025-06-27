@@ -1,25 +1,26 @@
 import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../../context/globalContext";
+import { useNavigate } from "react-router";
 
+import GlobalContext from "../../context/globalContext";
 import { PlayerBadge } from "../PlayerBadge";
-import { Game } from "../Game";
 
 export const Lobby = () => {
   const context = useContext(GlobalContext);
   if (!context) {
     throw new Error("ActionCableContext is not available");
   }
-
   const { subscribe, unsubscribe, send, player } = context;
+
   const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
-  const [gameId, setGameId] = useState<string | undefined>(undefined);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [opponentId, setOpponentId] = useState<string | null>(null);
 
   const playerId = player?.id;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!playerId) return;
+    if (!playerId) {
+      navigate("/");
+    }
 
     subscribe(
       { channel: "LobbyChannel" },
@@ -30,17 +31,10 @@ export const Lobby = () => {
           }
 
           if (channel.game_id) {
-            // delay 1.5s before setting gameId
+            // delay 1.5s before starting game
             setTimeout(() => {
-              send("join_game", {
-                game_id: channel.game_id,
-              });
-              setGameId(channel.game_id);
+              navigate(`/game/${channel.game_id}`);
             }, 1500);
-          }
-
-          if (channel.is_playing) {
-            setIsPlaying(channel.is_playing);
           }
 
           if (channel.active_players_count) {
@@ -50,12 +44,6 @@ export const Lobby = () => {
         connected: () => {
           send("get_lobby_stats", {});
         },
-        disconnected: () => {
-          console.log("LobbyChannel disconnected", { gameId });
-          if (gameId) {
-            setIsPlaying(true);
-          }
-        },
       }
     );
 
@@ -64,11 +52,7 @@ export const Lobby = () => {
     };
   }, [playerId]);
 
-  // Match Making Phase
-
-  return gameId && isPlaying ? (
-    <Game gameId={gameId} />
-  ) : (
+  return (
     <div className="flex flex-col items-center justify-center gap-4 p-4">
       <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
       {!opponentId && (
