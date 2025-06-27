@@ -14,14 +14,16 @@ export const Lobby = () => {
   const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
   const [opponentId, setOpponentId] = useState<string | null>(null);
 
-  const playerId = player?.id;
   const navigate = useNavigate();
+  const playerId = player?.id;
 
   useEffect(() => {
-    if (!playerId) {
-      navigate("/");
+    if (player?.game_id) {
+      navigate(`/game/${player.game_id}`);
     }
+  }, [player?.game_id]);
 
+  useEffect(() => {
     subscribe(
       { channel: "LobbyChannel" },
       {

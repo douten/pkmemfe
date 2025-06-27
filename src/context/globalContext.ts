@@ -5,7 +5,6 @@ import type { PlayerInterface } from "../components/types";
 
 interface GlobalContextType {
   player: PlayerInterface | null;
-  getPlayer: () => Promise<void>;
   send: ReturnType<typeof useChannel>["send"];
   subscribe: ReturnType<typeof useChannel>["subscribe"];
   unsubscribe: ReturnType<typeof useChannel>["unsubscribe"];
