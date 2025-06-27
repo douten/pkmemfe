@@ -1,9 +1,11 @@
 import { createContext } from "react";
 import useChannel from "../hooks/useChannel";
 
+import type { PlayerInterface } from "../components/types";
+
 interface GlobalContextType {
-  playerId: string | null;
-  getPlayerId: () => Promise<void>;
+  player: PlayerInterface | null;
+  getPlayer: () => Promise<void>;
   send: ReturnType<typeof useChannel>["send"];
   subscribe: ReturnType<typeof useChannel>["subscribe"];
   unsubscribe: ReturnType<typeof useChannel>["unsubscribe"];

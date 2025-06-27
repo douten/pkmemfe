@@ -1,5 +1,7 @@
 import { Consumer, Subscription } from "@rails/actioncable";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
+
+import type { GameInterface } from "../components/types";
 
 // Needed for @rails/actioncable
 // let global: any;
@@ -18,13 +20,29 @@ type Callbacks<T> = {
   disconnected?: () => void;
 };
 
-export default function useChannel<ReceivedType>(actionCable: Consumer) {
+interface ActionCableResponseInterface {
+  lobby_channel: {
+    active_players_count: number;
+    game_id?: string;
+    opponent_id?: string;
+    is_playing?: boolean;
+  };
+  games_channel: {
+    game: GameInterface;
+    delay: number;
+  };
+}
+
+export default function useChannel(actionCable: Consumer) {
   const channelRef = useRef<Subscription<Consumer> | null>(null);
 
-  const subscribe = (data: Data, callbacks: Callbacks<ReceivedType>) => {
+  const subscribe = (
+    data: Data,
+    callbacks: Callbacks<ActionCableResponseInterface>
+  ) => {
     console.log(`useChannel - INFO: Connecting to ${data.channel}`);
     const channel = actionCable.subscriptions.create(data, {
-      received: (message: ReceivedType) => {
+      received: (message: ActionCableResponseInterface) => {
         console.log("useChannel - INFO: Received message:", message);
         if (callbacks.received) {
           callbacks.received(message);

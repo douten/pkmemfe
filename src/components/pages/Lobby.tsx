@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import GlobalContext from "../context/globalContext";
+import GlobalContext from "../../context/globalContext";
 
-import { PlayerBadge } from "./PlayerBadge";
-import { Game } from "./Game";
+import { PlayerBadge } from "../PlayerBadge";
+import { Game } from "../Game";
 
 export const Lobby = () => {
   const context = useContext(GlobalContext);
@@ -10,11 +10,13 @@ export const Lobby = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send, playerId } = context;
+  const { subscribe, unsubscribe, send, player } = context;
   const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
-  const [gameId, setGameId] = useState<string | null>(null);
+  const [gameId, setGameId] = useState<string | undefined>(undefined);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [opponentId, setOpponentId] = useState<string | null>(null);
+
+  const playerId = player?.id;
 
   useEffect(() => {
     if (!playerId) return;
@@ -22,27 +24,27 @@ export const Lobby = () => {
     subscribe(
       { channel: "LobbyChannel" },
       {
-        received: (data) => {
-          if (data.opponent_id) {
-            setOpponentId(data.opponent_id);
+        received: ({ lobby_channel: channel }) => {
+          if (channel.opponent_id) {
+            setOpponentId(channel.opponent_id);
           }
 
-          if (data.game_id) {
+          if (channel.game_id) {
             // delay 1.5s before setting gameId
             setTimeout(() => {
               send("join_game", {
-                game_id: data.game_id,
+                game_id: channel.game_id,
               });
-              setGameId(data.game_id);
+              setGameId(channel.game_id);
             }, 1500);
           }
 
-          if (data.is_playing) {
-            setIsPlaying(data.is_playing);
+          if (channel.is_playing) {
+            setIsPlaying(channel.is_playing);
           }
 
-          if (data.active_players_count) {
-            setActivePlayersCount(data.active_players_count);
+          if (channel.active_players_count) {
+            setActivePlayersCount(channel.active_players_count);
           }
         },
         connected: () => {
