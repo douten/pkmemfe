@@ -1,13 +1,13 @@
 import { createContext } from "react";
 import useChannel from "../hooks/useChannel";
 
-interface ActionCableContextType {
+interface GlobalContextType {
   playerId: string | null;
+  getPlayerId: () => Promise<void>;
   send: ReturnType<typeof useChannel>["send"];
-  setPlayerId: React.Dispatch<React.SetStateAction<string | null>>;
   subscribe: ReturnType<typeof useChannel>["subscribe"];
   unsubscribe: ReturnType<typeof useChannel>["unsubscribe"];
 }
 
-const ActionCableContext = createContext<ActionCableContextType | null>(null);
-export default ActionCableContext;
+const GlobalContext = createContext<GlobalContextType | null>(null);
+export default GlobalContext;

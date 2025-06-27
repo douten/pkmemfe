@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import ActionCableContext from "../context/actionCableContext";
+import GlobalContext from "../context/globalContext";
 
 import { PlayerBadge } from "./PlayerBadge";
 
 export const Game = ({ gameId }: { gameId: string }) => {
-  const context = useContext(ActionCableContext);
+  const context = useContext(GlobalContext);
   if (!context) {
     throw new Error("ActionCableContext is not available");
   }
