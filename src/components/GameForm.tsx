@@ -8,7 +8,7 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
     if (!player.game_id) return;
 
     const response = await fetch(
-      `http://192.168.86.230:3000/games/${player.game_id}/concede`,
+      `${import.meta.env.VITE_API_URL}/games/${player.game_id}/concede`,
       {
         method: "POST",
         credentials: "include",
