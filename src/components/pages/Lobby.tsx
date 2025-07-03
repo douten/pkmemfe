@@ -27,7 +27,11 @@ export const Lobby = () => {
     subscribe(
       { channel: "LobbyChannel" },
       {
-        received: ({ lobby_channel: channel }) => {
+        received: (data) => {
+          console.log("LobbyChannel - INFO: Received data:", data);
+
+          const { lobby_channel: channel } = data;
+
           if (channel.opponent_id) {
             setOpponentId(channel.opponent_id);
           }
