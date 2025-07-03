@@ -27,11 +27,7 @@ export const Lobby = () => {
     subscribe(
       { channel: "LobbyChannel" },
       {
-        received: (data) => {
-          console.log("LobbyChannel - INFO: Received data:", data);
-
-          const { lobby_channel: channel } = data;
-
+        received: ({ lobby_channel: channel }) => {
           if (channel.opponent_id) {
             setOpponentId(channel.opponent_id);
           }
@@ -39,7 +35,7 @@ export const Lobby = () => {
           if (channel.game_id) {
             // delay 1.5s before starting game
             setTimeout(() => {
-              // navigate(`/game/${channel.game_id}`);
+              navigate(`/game/${channel.game_id}`);
             }, 1500);
           }
 
