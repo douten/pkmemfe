@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route, HashRouter } from "react-router";
 import { useEffect, useState } from "react";
 
 // hooks & context
@@ -52,7 +52,7 @@ function App() {
 
   if (player?.id) {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <GlobalContext.Provider value={contextValue}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -60,7 +60,7 @@ function App() {
             <Route path="/game/:id" element={<Game />} />
           </Routes>
         </GlobalContext.Provider>
-      </BrowserRouter>
+      </HashRouter>
     );
   } else {
     return (
