@@ -13,7 +13,7 @@ import type { PlayerInterface } from "./components/types";
 
 function App() {
   // START: CONTEXT SETUP
-  const { actionCable } = useActionCable("ws://192.168.86.230:3000/cable");
+  const { actionCable } = useActionCable(import.meta.env.VITE_ACTION_CABLE_URL);
   const { subscribe, unsubscribe, send } = useChannel(actionCable);
   const [player, setPlayer] = useState<PlayerInterface | null>(null);
   const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ function App() {
   const getPlayer = async () => {
     try {
       const response = await fetch(
-        "http://192.168.86.230:3000/players/get_player",
+        `${import.meta.env.VITE_API_URL}/players/get_player`,
         {
           credentials: "include",
         }
