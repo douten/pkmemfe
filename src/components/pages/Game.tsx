@@ -110,6 +110,14 @@ export const Game = () => {
         ) : (
           <div className="text-red-500">and a ooopp, You lost!</div>
         )}
+        <button
+          className="mt-2 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Go Back
+        </button>
       </div>
     );
   }
