@@ -39,7 +39,7 @@ export const Lobby = () => {
           if (channel.game_id) {
             // delay 1.5s before starting game
             setTimeout(() => {
-              navigate(`/game/${channel.game_id}`);
+              // navigate(`/game/${channel.game_id}`);
             }, 1500);
           }
 
