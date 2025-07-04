@@ -41,13 +41,17 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
           </button>
         </div>
       ) : (
-        <button
-          onClick={() => {
-            navigate("/lobby");
-          }}
-        >
-          Start Game
-        </button>
+        <div className="flex flex-col items-center justify-center gap-1">
+          <button
+            className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              navigate("/lobby");
+            }}
+          >
+            Start Game
+          </button>
+          <a href="">Rules</a>
+        </div>
       )}
     </>
   );

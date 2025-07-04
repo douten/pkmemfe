@@ -11,14 +11,21 @@ export const Home = () => {
   const { player } = context;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 mb-4">
-      {player && (
-        <>
-          <h2 className="text-xl">Player</h2>
-          <PlayerBadge playerId={player.id} />
-          <GameForm player={player} />
-        </>
-      )}
+    <div>
+      <div className=" w-70 aspect-[63/88] bg-[url(/swirl-bg.jpg)] bg-cover rounded-3xl backdrop-blur-sm bg-white/30 shadow-xl ring-1 ring-black/5">
+        <div className="flex flex-col flex-wrap items-center justify-around h-full">
+          {player && (
+            <>
+              <h1 className="font-black text-white italic text-5xl caveat-title text-teal-800">
+                PKmem
+              </h1>
+              <div>
+                <GameForm player={player} />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
