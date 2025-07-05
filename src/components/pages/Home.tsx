@@ -8,7 +8,7 @@ export const Home = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { player, setPlayer } = context;
+  const { player, setPlayer, setStopBg } = context;
   const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
 
   const getPlayer = async () => {
@@ -39,6 +39,10 @@ export const Home = () => {
     if (player) return;
     getPlayer();
   }, [player]);
+
+  useEffect(() => {
+    setStopBg(false); // Ensure background animation is running on home page
+  }, []);
 
   return (
     <div className="flex flex-col flex-wrap items-center justify-around h-full">

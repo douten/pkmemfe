@@ -20,7 +20,7 @@ export const Game = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send, player } = context;
+  const { subscribe, unsubscribe, send, player, setStopBg } = context;
   const [game, setGame] = useState<any>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [canFlip, setCanFlip] = useState(false);
@@ -36,6 +36,8 @@ export const Game = () => {
 
   useEffect(() => {
     if (!gameId) return;
+    setStopBg(true); // stop background animation
+
     subscribe(
       { channel: "GamesChannel", id: gameId },
       {
