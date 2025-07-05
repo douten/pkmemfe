@@ -1,9 +1,23 @@
-export const PlayerBadge = ({ playerId }: { playerId: string }) => {
+export const PlayerBadge = ({
+  playerId,
+  size,
+}: {
+  playerId: string;
+  size?: "sm" | "md" | "lg";
+}) => {
   const displayId = playerId.slice(-4).toLocaleUpperCase();
 
+  const sizeClasses = {
+    sm: "text-xs py-[1px] px-[5px]",
+    md: "text-sm py-[2px] px-[6px]",
+    lg: "text-md py-[3px] px-[8px]",
+  };
+  const sizeClass = size ? sizeClasses[size] : sizeClasses.md;
   return (
-    <div className="rounded-xs w-fit h-fit bg-viridian py-[1px] px-[5px] border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-      <span className="text-xs">PLAYER {displayId}</span>
+    <div
+      className={`rounded-sm w-fit h-fit bg-viridian ${sizeClass} text-center text-sm text-white shadow-sm`}
+    >
+      <span>PLAYER {displayId}</span>
     </div>
   );
 };

@@ -7,8 +7,10 @@
   --color-saffron: #e3b505;
   --color-fuchsia: #574d68;
   --color-viridian: #33673b;
+  --color-gray: #b0b0b0;
   --color-white: #ffffff;
   --color-black: #000000;
+  --color-black-text: #545454;
 }
 
 #root {
