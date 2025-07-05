@@ -6,9 +6,12 @@ export const Button = ({
   onClick: () => void;
 }) => {
   const btnStyle = [
-    // "bg-white/05",
     "backdrop-blur-md",
     "hover:bg-saffron",
+    "hover:scale-x-105",
+    "hover:text-white",
+    "cursor-pointer",
+    "hover:text-md",
     "text-viridian",
     "font-bold",
     "uppercase",
@@ -17,6 +20,8 @@ export const Button = ({
     "px-4",
     "text-sm",
     "w-full",
+    "transition-all",
+    "duration-450",
   ];
 
   return (

@@ -48,7 +48,7 @@ export const Home = () => {
     <div className="flex flex-col w-[240px] aspect-[63/88] flex-wrap items-center h-full p-[10px]">
       {player && (
         <>
-          <div className="flex flex-col items-center justify-center aspect-[20/14] box-border bg-white/25 w-full rounded-xl">
+          <div className="flex flex-col items-center justify-center aspect-[20/14] box-border bg-white/25 w-full ring-black/5 ring rounded-xl inset-shadow-md">
             <h1 className="font-black text-vermilion italic text-[38px] caveat-title text-teal-800">
               PKmem
             </h1>
