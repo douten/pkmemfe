@@ -109,13 +109,32 @@ export const Game = () => {
       <div className="flex flex-col items-center justify-center m-6 gap-2">
         <div>Game #{game.id} </div>
         <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
-        {game?.winner === playerId ? (
-          <div className="text-lg">Congratulations You won!</div>
-        ) : (
-          <div className="text-sm">welp.. someone has to lose!</div>
+        {playerId &&
+          (game?.winner === playerId ? (
+            <div className="text-lg">Congratulations You won!</div>
+          ) : (
+            <div className="text-lg">welp.. someone has to lose!</div>
+          ))}
+
+        {!playerId && game?.winner && (
+          <div className="text-lg">
+            {game.players.map((p: any) => (
+              <div key={p.id} className="flex items-center gap-2">
+                {p.id === game.winner
+                  ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
+                      Math.floor(Math.random() * 7)
+                    ]
+                  : ["💔", "😢", "😞", "😤", "🫥", "😡"][
+                      Math.floor(Math.random() * 6)
+                    ]}{" "}
+                <PlayerBadge playerId={p.id} />
+              </div>
+            ))}
+          </div>
         )}
+
         <Button
-          label="Go Back"
+          label="Back to Home"
           onClick={() => {
             navigate("/");
           }}
