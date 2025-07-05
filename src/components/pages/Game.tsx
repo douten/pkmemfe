@@ -84,17 +84,15 @@ export const Game = () => {
   // Can't Find Game State
   if (gameError) {
     return (
-      <div className="text-red-500">
-        {gameError}
-
-        <button
-          className="mt-2 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+      <div className="flex flex-col items-center justify-center h-full">
+        <h3 className="text-7xl mb-4">⚠️</h3>
+        <p className="text-vermilion mb-3 text-center">{gameError}</p>
+        <Button
+          label="Retry"
           onClick={() => {
             navigate("/");
           }}
-        >
-          Go Back
-        </button>
+        />
       </div>
     );
   }
