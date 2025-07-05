@@ -36,7 +36,6 @@ body {
 .bg {
   animation: scroll-back 50s linear infinite;
   animation-fill-mode: forwards;
-  /* background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%); */
   background: url("/tile_back.png") repeat;
   position: absolute;
   top: 0;
@@ -74,11 +73,6 @@ body {
   filter: blur(6px);
   opacity: 0.5;
 }
-
-/* .bg3 {
-  animation-duration: 70s;
-  background: url("/tile_1.png") repeat;
-} */
 
 @keyframes scroll-back {
   0% {
