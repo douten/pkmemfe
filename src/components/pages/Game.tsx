@@ -100,7 +100,7 @@ export const Game = () => {
   }
 
   if (!game) {
-    return <div>Getting Game...</div>;
+    return <div className="m-5">Getting Game...</div>;
   }
 
   if (game.state === "finished") {
