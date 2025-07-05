@@ -16,66 +16,21 @@ function App() {
   const { actionCable } = useActionCable(import.meta.env.VITE_ACTION_CABLE_URL);
   const { subscribe, unsubscribe, send } = useChannel(actionCable);
   const [player, setPlayer] = useState<PlayerInterface | null>(null);
-  const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
 
-  const getPlayer = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/players/get_player`,
-        {
-          credentials: "include",
-        }
-      );
-
-      const data = await response.json();
-
-      console.log("getPlayer - INFO: Player data fetched:", data);
-
-      if (!response.ok) {
-        setGetPlayerError("Failed to fetch player data");
-        return;
-      }
-
-      setPlayer(data);
-    } catch (error) {
-      setGetPlayerError("Failed to load player data. Please try again.");
-    }
-  };
-
-  const contextValue = { player, send, subscribe, unsubscribe };
+  const contextValue = { player, setPlayer, send, subscribe, unsubscribe };
   // END: CONTEXT SETUP
 
-  useEffect(() => {
-    if (player) return;
-    getPlayer();
-  }, [player]);
-
-  if (player?.id) {
-    return (
-      <HashRouter>
-        <GlobalContext.Provider value={contextValue}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/lobby" element={<Lobby />} />
-            <Route path="/game/:id" element={<Game />} />
-          </Routes>
-        </GlobalContext.Provider>
-      </HashRouter>
-    );
-  } else {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h3 className="text-lg mb-4">Error in Loading Player Data</h3>
-        <p>{getPlayerError}</p>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-          onClick={getPlayer}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  return (
+    <HashRouter>
+      <GlobalContext.Provider value={contextValue}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/lobby" element={<Lobby />} />
+          <Route path="/game/:id" element={<Game />} />
+        </Routes>
+      </GlobalContext.Provider>
+    </HashRouter>
+  );
 }
 
 export default App;
