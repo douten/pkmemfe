@@ -11,7 +11,7 @@ export const Lobby = () => {
   }
   const { subscribe, unsubscribe, send, player, setStopBg } = context;
 
-  const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
+  // const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
   const [opponentId, setOpponentId] = useState<string | null>(null);
 
   const navigate = useNavigate();
@@ -40,9 +40,9 @@ export const Lobby = () => {
             }, 2500);
           }
 
-          if (channel.active_players_count) {
-            setActivePlayersCount(channel.active_players_count);
-          }
+          // if (channel.active_players_count) {
+          //   setActivePlayersCount(channel.active_players_count);
+          // }
         },
         connected: () => {
           send("get_lobby_stats", {});
