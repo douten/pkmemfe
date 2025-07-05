@@ -88,7 +88,7 @@ export const Game = () => {
         <h3 className="text-7xl mb-4">⚠️</h3>
         <p className="text-vermilion mb-3 text-center">{gameError}</p>
         <Button
-          label="Retry"
+          label="Back to Home"
           onClick={() => {
             navigate("/");
           }}
