@@ -9,7 +9,7 @@ export const Lobby = () => {
   if (!context) {
     throw new Error("ActionCableContext is not available");
   }
-  const { subscribe, unsubscribe, send, player, setStopBg } = context;
+  const { subscribe, unsubscribe, send, player } = context;
 
   // const [activePlayersCount, setActivePlayersCount] = useState<number>(0);
   const [opponentId, setOpponentId] = useState<string | null>(null);
@@ -33,7 +33,6 @@ export const Lobby = () => {
           }
 
           if (channel.game_id) {
-            setStopBg(true); // stop background animation
             // delay 1s before starting game
             setTimeout(() => {
               navigate(`/game/${channel.game_id}`);

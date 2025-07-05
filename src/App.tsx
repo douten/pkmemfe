@@ -33,7 +33,13 @@ function App() {
     <HashRouter>
       <div className={`bg ${stopBg ? "pause-scroll" : ""}`}></div>
       <div className={`bg bg2 ${stopBg ? "pause-scroll" : ""}`}></div>
-      <div className="bg-cover rounded-3xl backdrop-blur-md bg-white/35 shadow-xl ring-1 ring-black/5">
+      <div
+        className={`bg-cover ${
+          stopBg
+            ? "h-dvh w-dvh sm:w-auto sm:h-auto sm:rounded-3xl"
+            : "rounded-3xl"
+        } backdrop-blur-md bg-white/35 shadow-xl ring-1 ring-black/5`}
+      >
         <GlobalContext.Provider value={contextValue}>
           <Routes>
             <Route path="/" element={<Home />} />

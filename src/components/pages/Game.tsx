@@ -126,32 +126,23 @@ export const Game = () => {
 
   // Live Game
   return (
-    <div>
-      <span>game{game.id}:</span>
+    <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
+      {/* <span>game{game.id}:</span> */}
 
-      <div className="flex items-center gap-4 mb-4 justify-center">
-        {playerId && <PlayerBadge playerId={playerId} />}
+      <div className="w-full flex items-center gap-4 my-4 justify-center bg-saffron p-3">
+        {playerId && <PlayerBadge playerId={playerId} size="lg" />}
         {/* score badge */}
-        <span className="text-xs text-gray-500">
+        <span className="text-md text-black-text font-bold">
           {game.players.find((p: any) => p.id === playerId)?.score || 0}
         </span>
-        <span className="text-xs text-gray-500">vs</span>
-        <span className="text-xs text-gray-500">
+        <span className="text-xl font-bold text-black-text font-black">:</span>
+        <span className="text-md text-black-text font-bold">
           {game.players.find((p: any) => p.id !== playerId)?.score || 0}
         </span>
-        {opponentId && <PlayerBadge playerId={opponentId} />}
-      </div>
-      <div className="flex items-center gap-4 mb-4 justify-center">
-        <div>
-          {canFlip ? (
-            <span className="text-green-500">your turn..</span>
-          ) : (
-            <span className="text-red-500">opponent's turn...</span>
-          )}
-        </div>
+        {opponentId && <PlayerBadge playerId={opponentId} size="lg" />}
       </div>
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px]">
         {game.cards?.map((card: any, index: number) => (
           <div
             key={index}
@@ -180,14 +171,21 @@ export const Game = () => {
         ))}
       </div>
 
-      <button
-        className="mb-4 px-2 py-1 bg-blue-500 text-white rounded text-xs"
-        onClick={() => {
-          send("concede", {});
-        }}
-      >
-        Concede
-      </button>
+      <div className="w-full flex items-center gap-2 my-4 p-1 text-black-text justify-center bg-saffron">
+        {canFlip ? (
+          <span className="text-green-500">your turn...</span>
+        ) : (
+          <span className="text-red-500">waiting on opponent...</span>
+        )}
+        <button
+          className="py-1 px-2 bg-gray text-white rounded text-xs"
+          onClick={() => {
+            send("concede", {});
+          }}
+        >
+          Concede
+        </button>
+      </div>
     </div>
   );
 };
