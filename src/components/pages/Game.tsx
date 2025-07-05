@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { Button } from "../Button";
 
 // context
 import GlobalContext from "../../context/globalContext";
@@ -105,22 +106,20 @@ export const Game = () => {
   if (game.state === "finished") {
     setStopBg(false); // resume background animation
     return (
-      <div className="flex flex-col items-center justify-center">
-        <div>Game {game.id} </div>
+      <div className="flex flex-col items-center justify-center m-6 gap-2">
+        <div>Game #{game.id} </div>
         <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
         {game?.winner === playerId ? (
-          <div className="text-green-500">Congratulations You won!</div>
+          <div className="text-lg">Congratulations You won!</div>
         ) : (
-          <div className="text-red-500">and a ooopp, You lost!</div>
+          <div className="text-sm">welp.. someone has to lose!</div>
         )}
-        <button
-          className="mt-2 px-2 py-1 bg-blue-500 text-white rounded text-xs"
+        <Button
+          label="Go Back"
           onClick={() => {
             navigate("/");
           }}
-        >
-          Go Back
-        </button>
+        />
       </div>
     );
   }
