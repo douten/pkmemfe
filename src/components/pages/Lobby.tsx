@@ -37,7 +37,7 @@ export const Lobby = () => {
             // delay 1.5s before starting game
             setTimeout(() => {
               navigate(`/game/${channel.game_id}`);
-            }, 1500);
+            }, 2500);
           }
 
           if (channel.active_players_count) {
@@ -60,15 +60,7 @@ export const Lobby = () => {
       <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
       {!opponentId && (
         <>
-          <div>Matching...</div>
-          <div className="flex flex-row gap-1 items-center">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            {/* player count badge */}
-            <span className="text-sm text-gray-500">
-              {activePlayersCount}{" "}
-              {activePlayersCount === 1 ? "player" : "players"}
-            </span>
-          </div>
+          <div>finding opponent...</div>
         </>
       )}
 

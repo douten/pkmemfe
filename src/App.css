@@ -34,30 +34,32 @@ body {
 }
 
 .bg {
-  animation: scroll-back 50s linear infinite;
+  animation: scroll-back 150s linear infinite;
   animation-fill-mode: forwards;
   background: url("/tile_back.png") repeat;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%; /* Double the width for smoother looping */
+  width: 200%;
   opacity: 0.3;
   z-index: -3;
   /* gaussian-blur: 10px; */
   filter: blur(8px);
-  transition: opacity 2s ease-in-out, filter 2s ease-in-out;
+  transition: opacity 1s ease-in-out, filter 1s ease-in-out;
 }
 
 .bg2 {
   /* animation: 10s infinite slid; */
   z-index: -2;
-  animation: scroll-front 40s linear infinite reverse;
+  animation: scroll-front 170s linear infinite reverse;
   animation-fill-mode: forwards;
   background: url("/tile_front.png") repeat;
   opacity: 0.4;
   filter: none;
-  transition: filter 2s ease-in-out, opacity 2s ease-in-out;
+  width: 200%;
+  transform: scale(1);
+  transition: filter 1s ease-in-out, opacity 1s ease-in-out;
 }
 
 .pause-scroll {
@@ -65,29 +67,29 @@ body {
 }
 
 .bg.pause-scroll {
-  filter: blur(15px);
+  filter: blur(35px);
   opacity: 0.4;
 }
 
 .bg2.pause-scroll {
-  filter: blur(6px);
+  filter: blur(20px);
   opacity: 0.5;
 }
 
 @keyframes scroll-back {
   0% {
-    background-position: 0 0;
+    transform: translateX(0);
   }
   100% {
-    background-position: -440px 0;
+    transform: translateX(-440px);
   }
 }
 
 @keyframes scroll-front {
   0% {
-    background-position: 0 0;
+    transform: translateX(0);
   }
   100% {
-    background-position: -440px 0;
+    transform: translateX(-440px);
   }
 }
