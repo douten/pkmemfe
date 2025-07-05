@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "../../context/globalContext";
 import { GameForm } from "../GameForm";
+import { Button } from "../Button";
 
 export const Home = () => {
   const context = useContext(GlobalContext);
@@ -31,7 +32,10 @@ export const Home = () => {
 
       setPlayer(data);
     } catch (error) {
-      setGetPlayerError("Failed to load player data. Please try again.");
+      console.error(error);
+      setGetPlayerError(
+        "Failed to load player data. Try again in a few minutes."
+      );
     }
   };
 
@@ -59,14 +63,9 @@ export const Home = () => {
 
       {getPlayerError && (
         <div className="flex flex-col items-center justify-center h-full">
-          <h3 className="text-lg mb-4">Error in Loading Player Data</h3>
-          <p>{getPlayerError}</p>
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={getPlayer}
-          >
-            Retry
-          </button>
+          <h3 className="text-7xl mb-4">⚠️</h3>
+          <p className="text-vermilion mb-3 text-center">{getPlayerError}</p>
+          <Button label="Retry" onClick={getPlayer} />
         </div>
       )}
     </div>

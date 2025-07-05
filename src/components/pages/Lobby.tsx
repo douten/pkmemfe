@@ -24,6 +24,11 @@ export const Lobby = () => {
   }, [player?.game_id]);
 
   useEffect(() => {
+    if (!playerId) {
+      navigate("/");
+      return;
+    }
+
     subscribe(
       { channel: "LobbyChannel" },
       {
