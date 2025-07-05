@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --color-*: initial;
+  --color-vermilion: #dd2e44;
+  --color-cerulean: #0081a7;
+  --color-saffron: #e3b505;
+  --color-fuschia: #574d68;
+  --color-viridian: #33673b;
+  --color-white: #ffffff;
+  --color-black: #000000;
+}
+
 #root {
   align-items: center;
   display: flex;
@@ -10,6 +21,8 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  overflow: hidden;
+  position: relative;
 }
 
 html {
@@ -21,44 +34,48 @@ body {
 }
 
 .bg {
-  animation: slide 30s ease-in-out infinite alternate;
-  background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
-  bottom: 0;
-  left: -50%;
-  opacity: 0.5;
-  position: fixed;
-  right: -50%;
+  animation: scroll-back 50s linear infinite;
+  /* background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%); */
+  background: url("/tile_back.png") repeat;
+  position: absolute;
   top: 0;
-  z-index: -1;
+  left: 0;
+  height: 100%;
+  width: 100%; /* Double the width for smoother looping */
+  opacity: 0.3;
+  z-index: -3;
+  /* gaussian-blur: 10px; */
+  filter: blur(8px);
 }
 
 .bg2 {
-  animation-direction: alternate-reverse;
-  animation-duration: 55s;
+  /* animation: 10s infinite slid; */
+  z-index: -2;
+  animation: scroll-front 40s linear infinite reverse;
+  background: url("/tile_front.png") repeat;
+  opacity: 0.4;
+  filter: none;
 }
 
-.bg3 {
+/* .bg3 {
   animation-duration: 70s;
-}
+  background: url("/tile_1.png") repeat;
+} */
 
-.content {
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 0.25em;
-  box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  left: 50%;
-  padding: 10vmin;
-  position: fixed;
-  text-align: center;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes slide {
+@keyframes scroll-back {
   0% {
-    transform: translateX(-25%);
+    background-position: 0 0;
   }
   100% {
-    transform: translateX(25%);
+    background-position: -440px 0;
+  }
+}
+
+@keyframes scroll-front {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -440px 0;
   }
 }
