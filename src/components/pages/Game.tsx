@@ -103,6 +103,7 @@ export const Game = () => {
   }
 
   if (game.state === "finished") {
+    setStopBg(false); // resume background animation
     return (
       <div className="flex flex-col items-center justify-center">
         <div>Game {game.id} </div>
