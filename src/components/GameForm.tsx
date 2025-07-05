@@ -1,6 +1,8 @@
 import type { PlayerInterface } from "./types";
 import { useNavigate } from "react-router";
 
+import { Button } from "./Button";
+
 export const GameForm = ({ player }: { player: PlayerInterface }) => {
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
   };
 
   return (
-    <>
+    <div className="grow w-full">
       {player.game_id ? (
         <div className="flex flex-col items-center justify-center gap-4 p-4">
           <div>You were in game {player.game_id} </div>
@@ -41,20 +43,12 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
           </button>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-1">
-          <button
-            className="bg-saffron hover:bg-saffron-700 text-white font-light uppercase py-2 px-4 rounded"
-            onClick={() => {
-              navigate("/lobby");
-            }}
-          >
-            Start Game
-          </button>
-          <a href="" className="text-cerulean">
-            Rules
-          </a>
+        <div className="h-full flex flex-col items-center justify-center gap-1">
+          <Button label="Start Game" onClick={() => navigate("/lobby")} />
+          <Button label="Stats" onClick={() => {}} />
+          <Button label="Rules" onClick={() => {}} />
         </div>
       )}
-    </>
+    </div>
   );
 };

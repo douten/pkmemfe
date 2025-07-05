@@ -45,20 +45,20 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col flex-wrap items-center justify-around h-full">
+    <div className="flex flex-col w-[240px] aspect-[63/88] flex-wrap items-center h-full p-[10px]">
       {player && (
         <>
-          <h1 className="font-black text-vermilion italic text-[44px] caveat-title text-teal-800">
-            PKmem
-          </h1>
-          <div>
-            <GameForm player={player} />
+          <div className="flex flex-col items-center justify-center aspect-[20/14] box-border bg-white/25 w-full rounded-xl">
+            <h1 className="font-black text-vermilion italic text-[38px] caveat-title text-teal-800">
+              PKmem
+            </h1>
           </div>
+          <GameForm player={player} />
         </>
       )}
 
       {getPlayerError && (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-full">
           <h3 className="text-lg mb-4">Error in Loading Player Data</h3>
           <p>{getPlayerError}</p>
           <button

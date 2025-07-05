@@ -5,7 +5,7 @@
   --color-vermilion: #dd2e44;
   --color-cerulean: #0081a7;
   --color-saffron: #e3b505;
-  --color-fuschia: #574d68;
+  --color-fuchsia: #574d68;
   --color-viridian: #33673b;
   --color-white: #ffffff;
   --color-black: #000000;
@@ -34,16 +34,16 @@ body {
 }
 
 .bg {
-  animation: scroll-back 150s linear infinite;
+  animation: scroll-back 170s linear infinite;
   animation-fill-mode: forwards;
   background: url("/tile_back.png") repeat;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  width: 200%;
   opacity: 0.3;
   z-index: -3;
+  right: -440px;
   /* gaussian-blur: 10px; */
   filter: blur(8px);
   transition: opacity 1s ease-in-out, filter 1s ease-in-out;
@@ -52,12 +52,13 @@ body {
 .bg2 {
   /* animation: 10s infinite slid; */
   z-index: -2;
-  animation: scroll-front 170s linear infinite reverse;
+  animation: scroll-front 190s linear infinite reverse;
   animation-fill-mode: forwards;
   background: url("/tile_front.png") repeat;
   opacity: 0.4;
   filter: none;
-  width: 200%;
+  padding: 440px;
+  left: -440px;
   transform: scale(1);
   transition: filter 1s ease-in-out, opacity 1s ease-in-out;
 }
@@ -87,9 +88,9 @@ body {
 
 @keyframes scroll-front {
   0% {
-    transform: translateX(0);
+    transform: translateX(440px);
   }
   100% {
-    transform: translateX(-440px);
+    transform: translateX(0);
   }
 }
