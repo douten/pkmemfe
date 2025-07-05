@@ -84,7 +84,7 @@ export const Game = () => {
   // Can't Find Game State
   if (gameError) {
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center justify-center h-full p-6 gap-2">
         <h3 className="text-7xl mb-4">⚠️</h3>
         <p className="text-vermilion mb-3 text-center">{gameError}</p>
         <Button
