@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Button } from "../Button";
+import { Card } from "../Card";
 
 // context
 import GlobalContext from "../../context/globalContext";
@@ -165,25 +166,15 @@ export const Game = () => {
             key={index}
             id={card.id}
             className="w-22 h-31 rounded-md"
-            style={{
-              backgroundColor: card.flipped ? "#686868" : "#fff",
-            }}
             data-flipped={card.flipped}
             onClick={flipCard}
           >
-            {card.flipped ? (
-              <img
-                src={card.image_url}
-                alt="Card"
-                className="w-full h-full rounded-md"
-              />
-            ) : (
-              <img
-                src="https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg"
-                alt="Card Back"
-                className="w-full h-full rounded-md"
-              />
-            )}
+            <Card
+              isFlipped={card.flipped}
+              image_url={card.image_url}
+              width="100%"
+              height="100%"
+            />
           </div>
         ))}
       </div>
