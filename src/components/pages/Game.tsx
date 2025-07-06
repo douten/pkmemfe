@@ -146,7 +146,7 @@ export const Game = () => {
     <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
       {/* <span>game{game.id}:</span> */}
 
-      <div className="w-full flex items-center gap-4 my-4 justify-center bg-saffron p-3">
+      <div className="w-full flex items-center gap-4 my-4 justify-center p-3">
         {playerId && <PlayerBadge playerId={playerId} size="lg" />}
         {/* score badge */}
         <span className="text-md text-black-text font-bold">
@@ -188,7 +188,7 @@ export const Game = () => {
         ))}
       </div>
 
-      <div className="w-full flex items-center gap-2 my-4 p-1 text-black-text justify-center bg-saffron">
+      <div className="w-full flex items-center gap-2 my-4 p-1 text-black-text justify-center">
         {canFlip ? (
           <span className="text-green-500">your turn...</span>
         ) : (

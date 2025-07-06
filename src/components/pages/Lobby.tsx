@@ -38,10 +38,7 @@ export const Lobby = () => {
           }
 
           if (channel.game_id) {
-            // delay 1s before starting game
-            setTimeout(() => {
-              navigate(`/game/${channel.game_id}`);
-            }, 1000);
+            navigate(`/game/${channel.game_id}`);
           }
 
           // if (channel.active_players_count) {
@@ -63,17 +60,6 @@ export const Lobby = () => {
     <div className="flex flex-col w-[240px] py-10 gap-2 flex-wrap items-center justify-center h-full p-[10px]">
       <div className="flex flex-col items-center justify-center gap-2">
         <div>{playerId && <PlayerBadge playerId={playerId} size="lg" />}</div>
-        <div className="text-lg font-bold text-vermilion">VS</div>
-
-        {!opponentId && (
-          <>
-            <div className="animate-pulse rounded-sm w-10 h-[26px] w-[100px] flex items-center gap-2 bg-viridian/55 uppercase text-md py-[3px] px-[8px] text-sm text-white shadow-sm"></div>
-          </>
-        )}
-
-        <div>
-          {opponentId && <PlayerBadge playerId={opponentId} size="lg" />}
-        </div>
       </div>
 
       <hr className="h-px my-4 w-full border-0 bg-black-text/70" />
