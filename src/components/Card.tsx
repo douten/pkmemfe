@@ -63,6 +63,20 @@ export const Card = ({
     dy.set(rotateYaxis);
   }, [rotateXaxis, rotateYaxis]);
 
+  const [cardUrl, setCardUrl] = useState<string | undefined>(image_url);
+
+  useEffect(() => {
+    if (image_url) {
+      setCardUrl(image_url);
+    } else {
+      // wait 300ms then set to null
+      const timer = setTimeout(() => {
+        setCardUrl(undefined);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [image_url]);
+
   return (
     <motion.div
       onClick={handleClick}
@@ -125,7 +139,7 @@ export const Card = ({
             }}
           >
             <img
-              src={image_url}
+              src={cardUrl}
               alt="Card Back"
               className="w-full h-full rounded-md"
             />

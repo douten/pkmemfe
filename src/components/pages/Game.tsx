@@ -37,7 +37,11 @@ export const Game = () => {
   };
 
   useEffect(() => {
-    if (!gameId) return;
+    if (!gameId || !playerId) {
+      navigate("/");
+      return;
+    }
+
     setStopBg(true); // stop background animation
 
     subscribe(
@@ -71,7 +75,7 @@ export const Game = () => {
     return () => {
       unsubscribe();
     };
-  }, [gameId]);
+  }, [gameId, playerId]);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;

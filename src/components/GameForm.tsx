@@ -27,20 +27,11 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
       {player.game_id ? (
         <div className="flex flex-col items-center justify-center gap-4 p-4">
           <div>You were in game {player.game_id} </div>
-          <button
-            onClick={() => {
-              navigate(`/game/${player.game_id}`);
-            }}
-          >
-            Continue Game
-          </button>
-          <button
-            onClick={() => {
-              concedeGame();
-            }}
-          >
-            Concede Game
-          </button>
+          <Button
+            label="Continue Game"
+            onClick={() => navigate(`/game/${player.game_id}`)}
+          />
+          <Button label="Concede Game" onClick={concedeGame} />
         </div>
       ) : (
         <div className="h-full flex flex-col items-center justify-center gap-1">
