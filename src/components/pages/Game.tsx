@@ -87,7 +87,7 @@ export const Game = () => {
         },
         rejected: () => {
           console.error("GameChannel rejected");
-          setGameError("Game not found or you are not allowed to join.");
+          setGameError("Game not found.");
         },
       }
     );
