@@ -15,7 +15,7 @@ export const PlayerBadge = ({
   const sizeClass = size ? sizeClasses[size] : sizeClasses.md;
   return (
     <div
-      className={`rounded-sm w-fit h-fit bg-viridian ${sizeClass} text-center text-sm text-white shadow-sm`}
+      className={`rounded-sm w-fit h-fit bg-viridian ${sizeClass} text-center text-white shadow-sm`}
     >
       <span>PLAYER {displayId}</span>
     </div>

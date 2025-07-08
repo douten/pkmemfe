@@ -75,9 +75,11 @@ export const Game = () => {
       }
     );
 
-    return () => {
-      unsubscribe();
-    };
+    // there is some kind of race condition bug with ActionCable
+    // stopping the unsubscribe here seems to fix it
+    // return () => {
+    //   unsubscribe();
+    // };
   }, [gameId, playerId]);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -110,25 +112,13 @@ export const Game = () => {
   }
 
   if (game.state === "finished") {
-    const playerInGame = game.players.find((p: any) => p.id === playerId);
-
     return (
       <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
-        <div className="flex flex-col items-center justify-center w-fit gap-2 p-4">
-          <div>Game #{game.id} </div>
-          <div>
-            {playerId && playerInGame && <PlayerBadge playerId={playerId} />}
-          </div>
-          {playerId &&
-            playerInGame &&
-            (game?.winner === playerId ? (
-              <div className="text-lg">Congratulations You won!</div>
-            ) : (
-              <div className="text-lg">welp.. someone has to lose!</div>
-            ))}
+        <div className="flex flex-col items-center justify-center w-fit gap-8 p-4">
+          <div className="text-2xl">Game #{game.id} results:</div>
 
           {game.state === "finished" && game?.winner && (
-            <div className="text-lg h-full w-full flex flex-col items-center justify-center gap-2">
+            <div className="text-lg h-full flex flex-col items-start justify-center gap-4">
               {game.players.map((p: any) => (
                 <div key={p.id} className="flex items-center gap-2">
                   {p.id === game.winner
@@ -138,7 +128,8 @@ export const Game = () => {
                     : ["💔", "😢", "😞", "😤", "🫥", "😡"][
                         Math.floor(Math.random() * 6)
                       ]}{" "}
-                  <PlayerBadge playerId={p.id} />
+                  <PlayerBadge playerId={p.id} size="lg" />
+                  {playerId && p.id === playerId ? "(you)" : <div>&nbsp;</div>}
                 </div>
               ))}
             </div>
