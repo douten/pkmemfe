@@ -3,15 +3,11 @@ import { useEffect, useRef, useCallback } from "react";
 
 import type { GameInterface } from "../components/types";
 
-// Needed for @rails/actioncable
-// let global: any;
-// global.addEventListener = () => {};
-// global.removeEventListener = () => {};
-
 type Data = {
   channel: string;
   id?: string;
   get_images?: boolean;
+  game_id?: string;
 };
 
 type Callbacks<T> = {

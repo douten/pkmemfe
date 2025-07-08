@@ -52,7 +52,10 @@ export const Game = () => {
     subscribe(
       {
         channel: "GamesChannel",
-        id: gameId,
+        // https://www.mgmarlow.com/til/2025-05-02-action-cable-react/
+        // action cable will only reconnect if the identifier changes
+        id: Date.now().toString(), // unique identifier to force reconnect
+        game_id: gameId,
         get_images: cardImages.length === 0,
       },
       {
@@ -89,8 +92,6 @@ export const Game = () => {
       }
     );
 
-    // there is some kind of race condition bug with ActionCable
-    // stopping the unsubscribe here seems to fix it
     return () => {
       unsubscribe();
     };

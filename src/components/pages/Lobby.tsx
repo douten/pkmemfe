@@ -30,7 +30,7 @@ export const Lobby = () => {
     }
 
     subscribe(
-      { channel: "LobbyChannel" },
+      { channel: "LobbyChannel", id: Date.now().toString() },
       {
         received: ({ lobby_channel: channel }) => {
           if (channel.opponent_id) {
