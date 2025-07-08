@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Button } from "../Button";
 import { Card } from "../Card";
@@ -27,6 +27,8 @@ export const Game = () => {
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [canFlip, setCanFlip] = useState(false);
   const [gameError, setGameError] = useState<string | null>(null);
+  const [cardImages, setCardImages] = useState<string[]>([]);
+  const [loadedImages, setLoadedImages] = useState<string[]>([]);
 
   const playerId = player?.id;
 
@@ -48,7 +50,11 @@ export const Game = () => {
 
     setStopBg(true); // stop background animation
     subscribe(
-      { channel: "GamesChannel", id: gameId },
+      {
+        channel: "GamesChannel",
+        id: gameId,
+        get_images: cardImages.length === 0,
+      },
       {
         received: (data) => {
           console.log("Received data:", data);
@@ -57,6 +63,14 @@ export const Game = () => {
 
           const delay = games_channel_response.delay || 0;
           const game = games_channel_response.game;
+          const imagesArray = games_channel_response.images_array || [];
+
+          if (imagesArray.length > 0) {
+            setCardImages([
+              "https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg",
+              ...imagesArray,
+            ]);
+          }
 
           if (game) {
             if (delay > 0) {
@@ -77,10 +91,28 @@ export const Game = () => {
 
     // there is some kind of race condition bug with ActionCable
     // stopping the unsubscribe here seems to fix it
-    // return () => {
-    //   unsubscribe();
-    // };
-  }, [gameId, playerId]);
+    return () => {
+      unsubscribe();
+    };
+  }, [gameId, playerId, cardImages]);
+
+  useEffect(() => {
+    if (cardImages.length > 0) {
+      // preload images
+      const promises = cardImages.map((imageUrl) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = imageUrl;
+          img.onload = () => {
+            setLoadedImages((prev) => [...prev, imageUrl]);
+            resolve(imageUrl);
+          };
+        });
+      });
+
+      Promise.all(promises);
+    }
+  }, [cardImages]);
 
   const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;
@@ -141,6 +173,22 @@ export const Game = () => {
               navigate("/");
             }}
           />
+        </div>
+      </div>
+    );
+  }
+
+  if (loadedImages.length < cardImages.length) {
+    return (
+      <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3 p-7">
+        <div className="text-lg">Loading game...</div>
+        <div className="w-64 h-2 bg-gray animate-pulse rounded-gray overflow-hidden">
+          <div
+            className="h-full bg-cerulean transition-all duration-100"
+            style={{
+              width: `${(loadedImages.length / cardImages.length) * 100}%`,
+            }}
+          ></div>
         </div>
       </div>
     );

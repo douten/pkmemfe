@@ -11,6 +11,7 @@ import type { GameInterface } from "../components/types";
 type Data = {
   channel: string;
   id?: string;
+  get_images?: boolean;
 };
 
 type Callbacks<T> = {
@@ -30,6 +31,7 @@ interface ActionCableResponseInterface {
   };
   games_channel: {
     game?: GameInterface;
+    images_array?: string[];
     delay?: number;
     error?: string;
   };
