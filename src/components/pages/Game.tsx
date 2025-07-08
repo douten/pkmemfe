@@ -28,22 +28,25 @@ export const Game = () => {
   const [canFlip, setCanFlip] = useState(false);
   const [gameError, setGameError] = useState<string | null>(null);
 
-  const playerId = player?.id;
+  const playerId = player.id;
 
   const updateGameStates = (game: any) => {
     setGame({ ...game });
-    setCanFlip(game.players.find((p: any) => p.id === playerId)?.can_flip);
-    setOpponentId(game.players.find((p: any) => p.id !== playerId)?.id || "");
+
+    const playerInPlayingGame =
+      game?.players.some((p: any) => p.id === playerId) &&
+      game.state !== "finished";
+
+    if (playerInPlayingGame) {
+      setCanFlip(game.players.find((p: any) => p.id === playerId)?.can_flip);
+      setOpponentId(game.players.find((p: any) => p.id !== playerId)?.id || "");
+    }
   };
 
   useEffect(() => {
-    if (!gameId || !playerId) {
-      navigate("/");
-      return;
-    }
+    if (!gameId) return;
 
     setStopBg(true); // stop background animation
-
     subscribe(
       { channel: "GamesChannel", id: gameId },
       {
@@ -107,41 +110,47 @@ export const Game = () => {
   }
 
   if (game.state === "finished") {
-    setStopBg(false); // resume background animation
+    const playerInGame = game.players.find((p: any) => p.id === playerId);
+
     return (
-      <div className="flex flex-col items-center justify-center m-6 gap-2">
-        <div>Game #{game.id} </div>
-        <div>{playerId && <PlayerBadge playerId={playerId} />}</div>
-        {playerId &&
-          (game?.winner === playerId ? (
-            <div className="text-lg">Congratulations You won!</div>
-          ) : (
-            <div className="text-lg">welp.. someone has to lose!</div>
-          ))}
-
-        {!playerId && game?.winner && (
-          <div className="text-lg">
-            {game.players.map((p: any) => (
-              <div key={p.id} className="flex items-center gap-2">
-                {p.id === game.winner
-                  ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
-                      Math.floor(Math.random() * 7)
-                    ]
-                  : ["💔", "😢", "😞", "😤", "🫥", "😡"][
-                      Math.floor(Math.random() * 6)
-                    ]}{" "}
-                <PlayerBadge playerId={p.id} />
-              </div>
-            ))}
+      <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
+        <div className="flex flex-col items-center justify-center w-fit gap-2 p-4">
+          <div>Game #{game.id} </div>
+          <div>
+            {playerId && playerInGame && <PlayerBadge playerId={playerId} />}
           </div>
-        )}
+          {playerId &&
+            playerInGame &&
+            (game?.winner === playerId ? (
+              <div className="text-lg">Congratulations You won!</div>
+            ) : (
+              <div className="text-lg">welp.. someone has to lose!</div>
+            ))}
 
-        <Button
-          label="Back to Home"
-          onClick={() => {
-            navigate("/");
-          }}
-        />
+          {game.state === "finished" && game?.winner && (
+            <div className="text-lg h-full w-full flex flex-col items-center justify-center gap-2">
+              {game.players.map((p: any) => (
+                <div key={p.id} className="flex items-center gap-2">
+                  {p.id === game.winner
+                    ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
+                        Math.floor(Math.random() * 7)
+                      ]
+                    : ["💔", "😢", "😞", "😤", "🫥", "😡"][
+                        Math.floor(Math.random() * 6)
+                      ]}{" "}
+                  <PlayerBadge playerId={p.id} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <Button
+            label="Back to Home"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        </div>
       </div>
     );
   }

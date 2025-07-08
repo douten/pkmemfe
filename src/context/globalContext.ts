@@ -4,8 +4,8 @@ import useChannel from "../hooks/useChannel";
 import type { PlayerInterface } from "../components/types";
 
 interface GlobalContextType {
-  player: PlayerInterface | null;
-  setPlayer: React.Dispatch<React.SetStateAction<PlayerInterface | null>>;
+  player: PlayerInterface;
+  setPlayer: React.Dispatch<React.SetStateAction<PlayerInterface>>;
   stopBg: boolean;
   setStopBg: React.Dispatch<React.SetStateAction<boolean>>;
   send: ReturnType<typeof useChannel>["send"];
