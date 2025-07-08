@@ -28,7 +28,7 @@ export const Game = () => {
   const [canFlip, setCanFlip] = useState(false);
   const [gameError, setGameError] = useState<string | null>(null);
 
-  const playerId = player.id;
+  const playerId = player?.id;
 
   const updateGameStates = (game: any) => {
     setGame({ ...game });

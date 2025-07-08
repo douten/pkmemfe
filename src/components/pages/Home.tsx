@@ -22,7 +22,7 @@ export const Home = () => {
             PKmem
           </h1>
         </div>
-        <GameForm player={player} />
+        {player && <GameForm player={player} />}
       </>
     </div>
   );
