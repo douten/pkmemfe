@@ -32,16 +32,13 @@ function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        setGetPlayerError("Failed to fetch player data");
+        setGetPlayerError("Failed to fetch player data.");
         return;
       }
 
       setPlayer(data);
-    } catch (error) {
-      console.error(error);
-      setGetPlayerError(
-        "Failed to load player data. Try again in a few minutes."
-      );
+    } catch (error: unknown) {
+      setGetPlayerError(error instanceof Error ? error.message : String(error));
     }
   };
 
@@ -95,7 +92,7 @@ function App() {
           </div>
         )}
         {getPlayerError && (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-full p-8">
             <h3 className="text-7xl mb-4">⚠️</h3>
             <p className="text-vermilion mb-3 text-center">{getPlayerError}</p>
             <Button label="Retry" onClick={getPlayer} />
