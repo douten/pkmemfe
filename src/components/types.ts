@@ -1,25 +1,25 @@
 interface PlayerInterface {
   id: string;
-  game_id: number;
+  game_id: string;
 }
 
 interface CardInterface {
-  id: number;
+  id: string;
   flipped: boolean;
   image_url: string | null;
 }
 
 interface GamePlayerInterface {
-  id: number;
+  id: string;
   score: number;
   can_flip: boolean;
 }
 
 interface GameInterface {
-  id: number;
+  id: string;
   players: GamePlayerInterface[];
   state: "matching" | "playing" | "finished" | "disconnected";
-  winner?: number | null;
+  winner?: string | null;
   cards: CardInterface[];
 }
 

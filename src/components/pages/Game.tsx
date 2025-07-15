@@ -9,13 +9,12 @@ import GlobalContext from "../../context/globalContext";
 // components
 import { PlayerBadge } from "../PlayerBadge";
 
+// types
+import type { GameInterface } from "../types";
+
 export const Game = () => {
   const { id: gameId } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
-  if (!gameId) {
-    return <div>Game ID is required</div>;
-  }
 
   const context = useContext(GlobalContext);
   if (!context) {
@@ -23,7 +22,7 @@ export const Game = () => {
   }
 
   const { subscribe, unsubscribe, send, player, setStopBg } = context;
-  const [game, setGame] = useState<any>(null);
+  const [game, setGame] = useState<GameInterface | null>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [canFlip, setCanFlip] = useState(false);
   const [gameError, setGameError] = useState<string | null>(null);
@@ -32,21 +31,21 @@ export const Game = () => {
 
   const playerId = player?.id;
 
-  const updateGameStates = (game: any) => {
-    setGame({ ...game });
-
-    const playerInPlayingGame =
-      game?.players.some((p: any) => p.id === playerId) &&
-      game.state !== "finished";
-
-    if (playerInPlayingGame) {
-      setCanFlip(game.players.find((p: any) => p.id === playerId)?.can_flip);
-      setOpponentId(game.players.find((p: any) => p.id !== playerId)?.id || "");
-    }
-  };
-
   useEffect(() => {
     if (!gameId) return;
+
+    const updateGameStates = (game: GameInterface) => {
+      setGame({ ...game });
+
+      const playerInPlayingGame =
+        game?.players.some((p) => p.id === playerId) &&
+        game.state !== "finished";
+
+      if (playerInPlayingGame) {
+        setCanFlip(!!game.players.find((p) => p.id === playerId)?.can_flip);
+        setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
+      }
+    };
 
     setStopBg(true); // stop background animation
     subscribe(
@@ -95,7 +94,7 @@ export const Game = () => {
     return () => {
       unsubscribe();
     };
-  }, [gameId, playerId, cardImages]);
+  }, [gameId, playerId, cardImages, setStopBg, subscribe, unsubscribe]);
 
   useEffect(() => {
     if (cardImages.length > 0) {
@@ -152,7 +151,7 @@ export const Game = () => {
 
           {game.state === "finished" && game?.winner && (
             <div className="text-lg h-full flex flex-col items-start justify-center gap-4">
-              {game.players.map((p: any) => (
+              {game.players.map((p) => (
                 <div key={p.id} className="flex items-center gap-2">
                   {p.id === game.winner
                     ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
@@ -204,17 +203,17 @@ export const Game = () => {
         {playerId && <PlayerBadge playerId={playerId} size="lg" />}
         {/* score badge */}
         <span className="text-md text-black-text font-bold">
-          {game.players.find((p: any) => p.id === playerId)?.score || 0}
+          {game.players.find((p) => p.id === playerId)?.score || 0}
         </span>
         <span className="text-xl font-bold text-black-text font-black">:</span>
         <span className="text-md text-black-text font-bold">
-          {game.players.find((p: any) => p.id !== playerId)?.score || 0}
+          {game.players.find((p) => p.id !== playerId)?.score || 0}
         </span>
         {opponentId && <PlayerBadge playerId={opponentId} size="lg" />}
       </div>
 
       <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px]">
-        {game.cards?.map((card: any, index: number) => (
+        {game.cards?.map((card, index: number) => (
           <div
             key={index}
             id={card.id}
