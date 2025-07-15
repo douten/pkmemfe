@@ -25,7 +25,7 @@ export const Card = ({
 }: {
   width?: string;
   height?: string;
-  image_url?: string;
+  image_url: string | undefined; // can be null when card is not flipped
   isFlipped: boolean;
 }) => {
   const handleClick = () => {};
