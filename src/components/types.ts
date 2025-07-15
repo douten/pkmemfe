@@ -6,7 +6,7 @@ interface PlayerInterface {
 interface CardInterface {
   id: string;
   flipped: boolean;
-  image_url: string | null;
+  image_url: string | undefined;
 }
 
 interface GamePlayerInterface {

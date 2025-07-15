@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 
 import GlobalContext from "../../context/globalContext";
 import { PlayerBadge } from "../PlayerBadge";
+import { Button } from "../Button";
 
 export const Lobby = () => {
   const context = useContext(GlobalContext);
@@ -66,7 +67,7 @@ export const Lobby = () => {
 
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="text-black-text font-medium text-center">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mb-5">
             {opponentId ? "creating game" : "finding opponent"}
             <div className="flex gap-[2px] justify-end items-center mt-[3px]">
               <span className="sr-only">Loading...</span>
@@ -75,6 +76,7 @@ export const Lobby = () => {
               <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce"></div>
             </div>
           </div>
+          <Button label="Cancel" onClick={() => navigate("/")} />
         </div>
       </div>
     </div>

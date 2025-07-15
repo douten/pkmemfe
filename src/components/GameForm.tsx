@@ -34,9 +34,8 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
           <Button label="Concede Game" onClick={concedeGame} />
         </div>
       ) : (
-        <div className="h-full flex flex-col items-center justify-center gap-1">
-          <Button label="Start Game" onClick={() => navigate("/lobby")} />
-          <Button label="Stats" onClick={() => {}} />
+        <div className="h-full flex flex-col items-center justify-center gap-1 p-6">
+          <Button label="Play" onClick={() => navigate("/lobby")} />
           <Button label="Rules" onClick={() => {}} />
         </div>
       )}
