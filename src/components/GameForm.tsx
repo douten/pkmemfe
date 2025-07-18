@@ -36,7 +36,7 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
       ) : (
         <div className="h-full flex flex-col items-center justify-center gap-1 p-6">
           <Button label="Play" onClick={() => navigate("/lobby")} />
-          <Button label="Rules" onClick={() => {}} />
+          <Button label="Rules" onClick={() => navigate("/rules")} />
         </div>
       )}
     </div>

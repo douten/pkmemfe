@@ -11,6 +11,7 @@ import "./App.css";
 import { Home, Lobby, Game } from "./components/pages/index";
 import type { PlayerInterface } from "./components/types";
 import { Button } from "./components/Button";
+import { Rules } from "./components/pages/Rules";
 
 function App() {
   // START: CONTEXT SETUP
@@ -74,6 +75,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/game/:id" element={<Game />} />
+              <Route path="/rules" element={<Rules />} />
             </Routes>
           </GlobalContext.Provider>
         )}
