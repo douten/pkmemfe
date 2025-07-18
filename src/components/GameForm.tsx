@@ -18,7 +18,7 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
     );
     const data = await response.json();
     if (data.status === "success") {
-      navigate("/");
+      window.location.reload();
     }
   };
 

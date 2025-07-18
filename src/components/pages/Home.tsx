@@ -12,7 +12,7 @@ export const Home = () => {
 
   useEffect(() => {
     setStopBg(false); // Ensure background animation is running on home page
-  }, []);
+  }, [setStopBg]);
 
   return (
     <div className="flex flex-col w-[240px] aspect-[63/88] flex-wrap items-center h-full p-[10px]">
