@@ -1,16 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Button } from "../Button";
-import { Card } from "../Card";
 
 // context
 import GlobalContext from "../../context/globalContext";
 
-// components
-import { PlayerBadge } from "../PlayerBadge";
+// hooks
+import { useGameChannel } from "../../hooks/useGameChannel";
+import { useImagePreloader } from "../../hooks/useImagePreloader";
 
-// types
-import type { GameInterface } from "../types";
+// components
+import { GameError } from "../GameError";
+import { GameFinished } from "../GameFinished";
+import { LoadingScreen } from "../LoadingScreen";
+import { GameBoard } from "../GameBoard";
 
 export const Game = () => {
   const { id: gameId } = useParams<{ id: string }>();
@@ -21,251 +23,64 @@ export const Game = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send, player, setStopBg } = context;
-  const [game, setGame] = useState<GameInterface | null>(null);
-  const [opponentId, setOpponentId] = useState<string | null>(null);
-  const [canFlip, setCanFlip] = useState(false);
-  const [gameError, setGameError] = useState<string | null>(null);
-  const [cardImages, setCardImages] = useState<string[]>([]);
-  const [loadedImages, setLoadedImages] = useState<string[]>([]);
-
+  const { player } = context;
   const playerId = player?.id;
 
-  useEffect(() => {
-    if (!gameId) return;
+  const {
+    game,
+    opponentId,
+    canFlip,
+    gameError,
+    cardImages,
+    flipCard,
+    concede,
+  } = useGameChannel(gameId, playerId);
 
-    const updateGameStates = (game: GameInterface) => {
-      setGame({ ...game });
+  const { loadedImages, isLoading } = useImagePreloader(cardImages);
 
-      const playerInPlayingGame =
-        game?.players.some((p) => p.id === playerId) &&
-        game.state !== "finished";
+  const handleBackToHome = () => navigate("/");
 
-      if (playerInPlayingGame) {
-        setCanFlip(!!game.players.find((p) => p.id === playerId)?.can_flip);
-        setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
-      }
-    };
-
-    setStopBg(true); // stop background animation
-    subscribe(
-      {
-        channel: "GamesChannel",
-        // https://www.mgmarlow.com/til/2025-05-02-action-cable-react/
-        // action cable will only reconnect if the identifier changes
-        id: Date.now().toString(), // unique identifier to force reconnect
-        game_id: gameId,
-        get_images: cardImages.length === 0,
-      },
-      {
-        received: (data) => {
-          console.log("Received data:", data);
-
-          const { games_channel: games_channel_response } = data;
-
-          const delay = games_channel_response.delay || 0;
-          const game = games_channel_response.game;
-          const imagesArray = games_channel_response.images_array || [];
-
-          if (imagesArray.length > 0) {
-            setCardImages([
-              "https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg",
-              ...imagesArray,
-            ]);
-          }
-
-          if (game) {
-            if (delay > 0) {
-              setTimeout(() => {
-                updateGameStates(game);
-              }, delay);
-            } else {
-              // TODO: clean up this animation logic
-              if (games_channel_response.matched_cards?.length) {
-                // add animation class of matched card ids query selector by id
-                // add card-out, then update game, then remove card-out, and add card-in
-                games_channel_response.matched_cards.forEach((cardId) => {
-                  const el = document.getElementById(cardId.toString());
-                  if (el) {
-                    el.classList.add("card-out");
-                    setTimeout(() => {
-                      updateGameStates(game);
-                      el.classList.remove("card-out");
-                      el.classList.add("card-in");
-                      setTimeout(() => {
-                        el.classList.remove("card-in");
-                      }, 800);
-                    }, 1000);
-                  }
-                });
-              } else {
-                updateGameStates(game);
-              }
-            }
-          }
-        },
-        rejected: () => {
-          console.error("GameChannel rejected");
-          setGameError("Game not found.");
-        },
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, [gameId, playerId, cardImages, setStopBg, subscribe, unsubscribe]);
-
-  useEffect(() => {
-    if (cardImages.length > 0) {
-      // preload images
-      const promises = cardImages.map((imageUrl) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = imageUrl;
-          img.onload = () => {
-            setLoadedImages((prev) => [...prev, imageUrl]);
-            resolve(imageUrl);
-          };
-        });
-      });
-
-      Promise.all(promises);
-    }
-  }, [cardImages]);
-
-  const flipCard = async (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;
-
-    send("flip_card", {
-      game_card_id: e.currentTarget.id,
-      player_id: playerId,
-    });
-  };
-
-  // Can't Find Game State
+  // Error state
   if (gameError) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full p-6 gap-2">
-        <h3 className="text-7xl mb-4">⚠️</h3>
-        <p className="text-vermilion mb-3 text-center">{gameError}</p>
-        <Button
-          label="Back to Home"
-          onClick={() => {
-            navigate("/");
-          }}
-        />
-      </div>
-    );
+    return <GameError error={gameError} onBackToHome={handleBackToHome} />;
   }
 
+  // Loading game data
   if (!game) {
-    return <div className="m-5">Getting Game...</div>;
+    return <LoadingScreen message="Getting Game..." />;
   }
 
+  // Game finished
   if (game.state === "finished") {
     return (
-      <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
-        <div className="flex flex-col items-center justify-center w-fit gap-8 p-4">
-          <div className="text-2xl">Game #{game.id} results:</div>
-
-          {game.state === "finished" && game?.winner && (
-            <div className="text-lg h-full flex flex-col items-start justify-center gap-4">
-              {game.players.map((p) => (
-                <div key={p.id} className="flex items-center gap-2">
-                  {p.id === game.winner
-                    ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
-                        Math.floor(Math.random() * 7)
-                      ]
-                    : ["💔", "😢", "😞", "😤", "🫥", "😡"][
-                        Math.floor(Math.random() * 6)
-                      ]}{" "}
-                  <PlayerBadge playerId={p.id} size="lg" />
-                  {playerId && p.id === playerId ? "(you)" : <div>&nbsp;</div>}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <Button
-            label="Back to Home"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
-        </div>
-      </div>
+      <GameFinished
+        game={game}
+        playerId={playerId}
+        onBackToHome={handleBackToHome}
+      />
     );
   }
 
-  if (loadedImages.length < cardImages.length) {
+  // Loading images
+  if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3 p-7">
-        <div className="text-lg">Loading game...</div>
-        <div className="w-64 h-2 bg-gray animate-pulse rounded-gray overflow-hidden">
-          <div
-            className="h-full bg-cerulean transition-all duration-100"
-            style={{
-              width: `${(loadedImages.length / cardImages.length) * 100}%`,
-            }}
-          ></div>
-        </div>
-      </div>
+      <LoadingScreen
+        message="Loading game..."
+        progress={loadedImages.length}
+        total={cardImages.length}
+      />
     );
   }
 
-  // Live Game
+  // Active game
   return (
-    <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
-      {/* <span>game{game.id}:</span> */}
-
-      <div className="w-full flex items-center gap-4 my-4 justify-center p-3">
-        {playerId && <PlayerBadge playerId={playerId} size="lg" />}
-        {/* score badge */}
-        <span className="text-md text-black-text font-bold">
-          {game.players.find((p) => p.id === playerId)?.score || 0}
-        </span>
-        <span className="text-xl font-bold text-black-text font-black">:</span>
-        <span className="text-md text-black-text font-bold">
-          {game.players.find((p) => p.id !== playerId)?.score || 0}
-        </span>
-        {opponentId && <PlayerBadge playerId={opponentId} size="lg" />}
-      </div>
-
-      <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px]">
-        {game.cards?.map((card, index: number) => (
-          <div
-            key={index}
-            id={card.id}
-            className="w-22 h-31 rounded-md"
-            data-flipped={card.flipped}
-            onClick={flipCard}
-          >
-            <Card
-              isFlipped={card.flipped}
-              image_url={card.image_url}
-              width="100%"
-              height="100%"
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="w-full flex items-center gap-2 my-4 p-1 text-black-text justify-center">
-        {canFlip ? (
-          <span className="text-green-500">your turn...</span>
-        ) : (
-          <span className="text-red-500">waiting on opponent...</span>
-        )}
-        <button
-          className="py-1 px-2 bg-gray text-white rounded text-xs"
-          onClick={() => {
-            send("concede", {});
-          }}
-        >
-          Concede
-        </button>
-      </div>
-    </div>
+    <GameBoard
+      game={game}
+      playerId={playerId}
+      opponentId={opponentId}
+      canFlip={canFlip}
+      onFlipCard={flipCard}
+      onConcede={concede}
+    />
   );
 };
