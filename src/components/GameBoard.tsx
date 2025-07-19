@@ -7,7 +7,7 @@ interface GameBoardProps {
   game: GameInterface;
   playerId: string | undefined;
   opponentId: string | null;
-  canFlip: boolean;
+  turnPlayerId: string | undefined;
   onFlipCard: (cardId: string) => void;
   onConcede: () => void;
 }
@@ -16,17 +16,21 @@ export const GameBoard = ({
   game,
   playerId,
   opponentId,
-  canFlip,
+  turnPlayerId,
   onFlipCard,
   onConcede,
 }: GameBoardProps) => {
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.flipped === "true" || !canFlip) return;
+    if (e.currentTarget.dataset.flipped === "true" || turnPlayerId !== playerId)
+      return;
     onFlipCard(e.currentTarget.id);
   };
 
   const playerScore = game.players.find((p) => p.id === playerId)?.score || 0;
   const opponentScore = game.players.find((p) => p.id !== playerId)?.score || 0;
+
+  const isPlayerTurn = turnPlayerId === playerId;
+  const isOpponentTurn = turnPlayerId === opponentId;
 
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative">
@@ -57,7 +61,7 @@ export const GameBoard = ({
         <div className="w-full flex items-center gap-4 justify-center p-3 sm:mb-3">
           <div className="flex flex-col items-center">
             <span className="text-xs font-semibold h-4 text-left w-full">
-              {canFlip ? "your turn" : ""}
+              {isPlayerTurn ? "your turn" : ""}
             </span>
             <div className="flex items-center gap-5">
               {playerId && <PlayerBadge playerId={playerId} size="sm" />}
@@ -71,7 +75,7 @@ export const GameBoard = ({
           </span>
           <div className="flex flex-col items-center">
             <span className="text-xs font-semibold h-4 text-right w-full">
-              {!canFlip ? "opponent turn" : ""}
+              {isOpponentTurn ? "opponent turn" : ""}
             </span>
             <div className="flex items-center gap-5">
               <span className="text-2xl text-black-text font-bold">

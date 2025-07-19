@@ -29,7 +29,7 @@ export const Game = () => {
   const {
     game,
     opponentId,
-    canFlip,
+    turnPlayerId,
     gameError,
     cardImages,
     flipCard,
@@ -78,7 +78,7 @@ export const Game = () => {
       game={game}
       playerId={playerId}
       opponentId={opponentId}
-      canFlip={canFlip}
+      turnPlayerId={turnPlayerId}
       onFlipCard={flipCard}
       onConcede={concede}
     />

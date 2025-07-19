@@ -14,7 +14,9 @@ export const useGameChannel = (
   const { subscribe, unsubscribe, send, setStopBg } = context;
   const [game, setGame] = useState<GameInterface | null>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
-  const [canFlip, setCanFlip] = useState(false);
+  const [turnPlayerId, setTurnPlayerId] = useState<string | undefined>(
+    undefined
+  );
   const [gameError, setGameError] = useState<string | null>(null);
   const [cardImages, setCardImages] = useState<string[]>([]);
 
@@ -25,7 +27,7 @@ export const useGameChannel = (
       game?.players.some((p) => p.id === playerId) && game.state !== "finished";
 
     if (playerInPlayingGame) {
-      setCanFlip(!!game.players.find((p) => p.id === playerId)?.can_flip);
+      setTurnPlayerId(game.players.find((p) => p.can_flip)?.id);
       setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
     }
   };
@@ -114,7 +116,7 @@ export const useGameChannel = (
   return {
     game,
     opponentId,
-    canFlip,
+    turnPlayerId,
     gameError,
     cardImages,
     flipCard,
