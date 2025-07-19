@@ -90,7 +90,7 @@ export const Card = ({
     >
       <motion.div
         ref={ref}
-        whileHover={{ scale: 1.1 }} //Change the scale of zooming in when hovering
+        whileHover={!isFlipped ? { scale: 1.1 } : {}} //Change the scale of zooming in when hovering
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseEnd}
         transition={spring}

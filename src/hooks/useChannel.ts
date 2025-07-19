@@ -30,6 +30,7 @@ interface ActionCableResponseInterface {
     images_array?: string[];
     delay?: number;
     error?: string;
+    matched_cards?: number[];
   };
 }
 

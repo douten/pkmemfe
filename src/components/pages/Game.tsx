@@ -80,7 +80,27 @@ export const Game = () => {
                 updateGameStates(game);
               }, delay);
             } else {
-              updateGameStates(game);
+              // TODO: clean up this animation logic
+              if (games_channel_response.matched_cards?.length) {
+                // add animation class of matched card ids query selector by id
+                // add card-out, then update game, then remove card-out, and add card-in
+                games_channel_response.matched_cards.forEach((cardId) => {
+                  const el = document.getElementById(cardId.toString());
+                  if (el) {
+                    el.classList.add("card-out");
+                    setTimeout(() => {
+                      updateGameStates(game);
+                      el.classList.remove("card-out");
+                      el.classList.add("card-in");
+                      setTimeout(() => {
+                        el.classList.remove("card-in");
+                      }, 800);
+                    }, 1000);
+                  }
+                });
+              } else {
+                updateGameStates(game);
+              }
             }
           }
         },
