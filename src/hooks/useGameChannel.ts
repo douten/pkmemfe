@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import GlobalContext from "../context/globalContext";
 import type { GameInterface } from "../components/types";
 
@@ -20,11 +20,9 @@ export const useGameChannel = (
   const [gameError, setGameError] = useState<string | null>(null);
   const [cardImages, setCardImages] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (!gameId) return;
-    console.log("useChannelGame useEffect");
-
-    const updateGameStates = (game: GameInterface) => {
+  // Updates game state and determines current turn player and opponent
+  const updateGameStates = useCallback(
+    (game: GameInterface) => {
       setGame({ ...game });
 
       const playerInPlayingGame =
@@ -35,12 +33,13 @@ export const useGameChannel = (
         setTurnPlayerId(game.players.find((p) => p.can_flip)?.id);
         setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
       }
-    };
+    },
+    [playerId]
+  );
 
-    const handleMatchedCards = (
-      matchedCards: string[],
-      game: GameInterface
-    ) => {
+  // Animates matched cards with fade-out/fade-in effect before updating game state
+  const handleMatchedCards = useCallback(
+    (matchedCards: string[], game: GameInterface) => {
       matchedCards.forEach((cardId) => {
         const el = document.getElementById(cardId.toString());
         if (el) {
@@ -55,9 +54,54 @@ export const useGameChannel = (
           }, 1000);
         }
       });
-    };
+    },
+    [updateGameStates]
+  );
+
+  // Processes incoming WebSocket messages and updates game state or triggers animations
+  const handleChannelMessage = useCallback(
+    (data: any) => {
+      console.log("Received data:", data);
+
+      const { games_channel: games_channel_response } = data;
+      const delay = games_channel_response.delay || 0;
+      const game = games_channel_response.game;
+      const imagesArray = games_channel_response.images_array || [];
+
+      // Handle images
+      if (imagesArray.length > 0) {
+        setCardImages([
+          "https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg",
+          ...imagesArray,
+        ]);
+      }
+
+      // Handle game updates
+      if (game) {
+        if (delay > 0) {
+          setTimeout(() => updateGameStates(game), delay);
+        } else if (games_channel_response.matched_cards?.length) {
+          handleMatchedCards(games_channel_response.matched_cards, game);
+        } else {
+          updateGameStates(game);
+        }
+      }
+    },
+    [updateGameStates, handleMatchedCards]
+  );
+
+  // Handles WebSocket connection errors and sets appropriate error state
+  const handleChannelError = useCallback(() => {
+    console.error("GameChannel rejected");
+    setGameError("Game not found.");
+  }, []);
+
+  // Establishes WebSocket subscription to game channel and manages cleanup
+  useEffect(() => {
+    if (!gameId) return;
 
     setStopBg(true);
+
     subscribe(
       {
         channel: "GamesChannel",
@@ -66,46 +110,23 @@ export const useGameChannel = (
         get_images: cardImages.length === 0,
       },
       {
-        received: (data) => {
-          console.log("Received data:", data);
-
-          const { games_channel: games_channel_response } = data;
-          const delay = games_channel_response.delay || 0;
-          const game = games_channel_response.game;
-          const imagesArray = games_channel_response.images_array || [];
-
-          if (imagesArray.length > 0) {
-            setCardImages([
-              "https://tcg.pokemon.com/assets/img/global/tcg-card-back-2x.jpg",
-              ...imagesArray,
-            ]);
-          }
-
-          if (game) {
-            if (delay > 0) {
-              setTimeout(() => {
-                updateGameStates(game);
-              }, delay);
-            } else {
-              if (games_channel_response.matched_cards?.length) {
-                handleMatchedCards(games_channel_response.matched_cards, game);
-              } else {
-                updateGameStates(game);
-              }
-            }
-          }
-        },
-        rejected: () => {
-          console.error("GameChannel rejected");
-          setGameError("Game not found.");
-        },
+        received: handleChannelMessage,
+        rejected: handleChannelError,
       }
     );
 
     return () => {
       unsubscribe();
     };
-  }, [gameId, playerId, cardImages, setStopBg, subscribe, unsubscribe]);
+  }, [
+    gameId,
+    cardImages.length,
+    setStopBg,
+    subscribe,
+    unsubscribe,
+    handleChannelMessage,
+    handleChannelError,
+  ]);
 
   const flipCard = (cardId: string) => {
     send("flip_card", {
