@@ -10,9 +10,7 @@ import { useToast } from "./hooks/useToast";
 // components & styling
 import "./App.css";
 import { Home, Lobby, Game, Rules } from "./components/pages/index";
-import { LoadingPlayerScreen } from "./components/LoadingPlayerScreen";
-import { Toast } from "./components/Toast";
-import { ErrorModal } from "./components/ErrorModal";
+import { ErrorModal, Toast, LoadingPlayerScreen } from "./components/index";
 
 // typing
 import type { PlayerInterface } from "./components/types";
