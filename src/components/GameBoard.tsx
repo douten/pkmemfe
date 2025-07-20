@@ -27,7 +27,7 @@ export const GameBoard = ({
       showToast({
         message: "Opponent's turn, please wait..",
         type: "warning",
-        duration: 500,
+        duration: 1000,
       });
       return;
     }

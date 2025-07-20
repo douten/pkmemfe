@@ -18,8 +18,6 @@ export const Toast = ({
 }: ToastProps) => {
   const [show, setShow] = useState(isVisible);
 
-  duration = duration + 300; // Add extra time for animation
-
   useEffect(() => {
     setShow(isVisible);
   }, [isVisible]);
