@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import useChannel from "./hooks/useChannel";
 import useActionCable from "./hooks/useActionCable";
 import GlobalContext from "./context/globalContext";
+import { useToast } from "./hooks/useToast";
 
 // components & styling
 import "./App.css";
-import { Home, Lobby, Game } from "./components/pages/index";
-import type { PlayerInterface } from "./components/types";
+import { Home, Lobby, Game, Rules } from "./components/pages/index";
 import { Button } from "./components/Button";
-import { Rules } from "./components/pages/Rules";
+import { Toast } from "./components/Toast";
+
+// typing
+import type { PlayerInterface } from "./components/types";
 
 function App() {
   // START: CONTEXT SETUP
@@ -20,6 +23,20 @@ function App() {
   const [player, setPlayer] = useState<PlayerInterface | null>(null);
   const [stopBg, setStopBg] = useState<boolean>(false);
   const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
+  const { toast, isVisible, showToast, hideToast } = useToast();
+
+  const contextValue = {
+    player,
+    setPlayer,
+    send,
+    subscribe,
+    unsubscribe,
+    stopBg,
+    setStopBg,
+    showToast,
+    hideToast,
+  };
+  // END: CONTEXT SETUP
 
   const getPlayer = async () => {
     try {
@@ -46,17 +63,6 @@ function App() {
   useEffect(() => {
     getPlayer();
   }, []);
-
-  const contextValue = {
-    player,
-    setPlayer,
-    send,
-    subscribe,
-    unsubscribe,
-    stopBg,
-    setStopBg,
-  };
-  // END: CONTEXT SETUP
 
   return (
     <HashRouter>
@@ -99,6 +105,15 @@ function App() {
             <p className="text-vermilion mb-3 text-center">{getPlayerError}</p>
             <Button label="Retry" onClick={getPlayer} />
           </div>
+        )}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            isVisible={isVisible}
+            onClose={hideToast}
+          />
         )}
       </div>
     </HashRouter>

@@ -1,18 +1,18 @@
 // filepath: /Users/minh/code/pkmemfe/src/hooks/useToast.ts
 import { useState, useCallback } from "react";
 
-interface ToastConfig {
+export interface ToastConfigInterface {
   message: string;
   type?: "success" | "error" | "warning" | "info";
   duration?: number;
 }
 
 export const useToast = () => {
-  const [toast, setToast] = useState<ToastConfig | null>(null);
+  const [toast, setToast] = useState<ToastConfigInterface | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   const showToast = useCallback(
-    ({ message, type = "info", duration = 3000 }: ToastConfig) => {
+    ({ message, type = "info", duration = 3000 }: ToastConfigInterface) => {
       setToast({ message, type, duration });
       setIsVisible(true);
     },

@@ -1,9 +1,8 @@
 import { Card } from "./Card";
 import { PlayerBadge } from "./PlayerBadge";
 import { ConcedeModal } from "./ConcedeModal";
+import { useGlobalToast } from "../hooks/useGlobalToast";
 import type { GameInterface } from "./types";
-import { Toast } from "./Toast";
-import { useToast } from "../hooks/useToast";
 
 interface GameBoardProps {
   game: GameInterface;
@@ -22,7 +21,10 @@ export const GameBoard = ({
   onFlipCard,
   onConcede,
 }: GameBoardProps) => {
+  const { showToast } = useGlobalToast();
+
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Alert player it's not their turn
     if (turnPlayerId !== playerId) {
       showToast({
         message: "Opponent's turn, please wait..",
@@ -31,11 +33,12 @@ export const GameBoard = ({
       });
       return;
     }
+
+    // Do nothing if card is already flipped
     if (e.currentTarget.dataset.flipped === "true") return;
+
     onFlipCard(e.currentTarget.id);
   };
-
-  const { toast, isVisible, showToast, hideToast } = useToast();
 
   const playerScore = game.players.find((p) => p.id === playerId)?.score || 0;
   const opponentScore = game.players.find((p) => p.id !== playerId)?.score || 0;
@@ -104,20 +107,6 @@ export const GameBoard = ({
             </div>
           </div>
         </div>
-      </div>
-
-      <div>
-        {/* Your game content */}
-
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            duration={toast.duration}
-            isVisible={isVisible}
-            onClose={hideToast}
-          />
-        )}
       </div>
     </div>
   );
