@@ -1,6 +1,5 @@
-import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation } from "react-router";
 
 // hooks & context
 import useChannel from "../hooks/useChannel";
@@ -8,11 +7,11 @@ import useActionCable from "../hooks/useActionCable";
 import GlobalContext from "../context/globalContext";
 import { useToast } from "../hooks/useToast";
 
-// components & styling
+// components
 import { Background, Game, Home, Lobby, Rules } from "./pages/index";
 import { ErrorModal, Toast, LoadingPlayerScreen } from "./index";
 
-// typing
+// types
 import type { PlayerInterface } from "./types";
 
 function AppContent() {
