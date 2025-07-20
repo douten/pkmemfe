@@ -10,20 +10,24 @@ import GlobalProvider from "./GlobalProvider";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 
 function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/lobby" element={<Lobby />} />
+      <Route path="/game/:id" element={<Game />} />
+      <Route path="/rules" element={<Rules />} />
+    </Routes>
+  );
+}
+
+function AppManager() {
   const { player, getPlayerError, getPlayer, toast, isVisible, hideToast } =
     useGlobalContext();
 
   return (
     <>
-      {player && (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lobby" element={<Lobby />} />
-          <Route path="/game/:id" element={<Game />} />
-          <Route path="/rules" element={<Rules />} />
-        </Routes>
-      )}
       {!player && !getPlayerError && <LoadingPlayerScreen />}
+      {player && <AppRoutes />}
       {getPlayerError && (
         <ErrorModal error={getPlayerError} onClick={getPlayer} />
       )}
@@ -47,7 +51,7 @@ function AppContent() {
   return (
     <Background animateBackground={animateBackground}>
       <GlobalProvider>
-        <AppRoutes />
+        <AppManager />
       </GlobalProvider>
     </Background>
   );
