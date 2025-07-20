@@ -9,7 +9,7 @@ import { useGameChannel } from "../../hooks/useGameChannel";
 import { useImagePreloader } from "../../hooks/useImagePreloader";
 
 // components
-import { GameError } from "../GameError";
+import { ErrorModal } from "../ErrorModal";
 import { GameFinished } from "../GameFinished";
 import { LoadingScreen } from "../LoadingScreen";
 import { GameBoard } from "../GameBoard";
@@ -42,7 +42,7 @@ export const Game = () => {
 
   // Error state
   if (gameError) {
-    return <GameError error={gameError} onBackToHome={handleBackToHome} />;
+    return <ErrorModal error={gameError} onClick={handleBackToHome} />;
   }
 
   // Loading game data

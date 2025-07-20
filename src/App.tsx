@@ -10,8 +10,9 @@ import { useToast } from "./hooks/useToast";
 // components & styling
 import "./App.css";
 import { Home, Lobby, Game, Rules } from "./components/pages/index";
-import { Button } from "./components/Button";
+import { LoadingPlayerScreen } from "./components/LoadingPlayerScreen";
 import { Toast } from "./components/Toast";
+import { ErrorModal } from "./components/ErrorModal";
 
 // typing
 import type { PlayerInterface } from "./components/types";
@@ -86,25 +87,9 @@ function AppContent() {
             </Routes>
           </GlobalContext.Provider>
         )}
-        {!player && !getPlayerError && (
-          <div className="flex flex-col items-center justify-center h-full m-8">
-            <div className="text-black-text text-center flex items-center gap-1">
-              Loading player data
-              <div className="flex gap-[2px] justify-end items-center mt-[3px]">
-                <span className="sr-only">Loading...</span>
-                <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce"></div>
-              </div>
-            </div>
-          </div>
-        )}
+        {!player && !getPlayerError && <LoadingPlayerScreen />}
         {getPlayerError && (
-          <div className="flex flex-col items-center justify-center h-full p-8">
-            <h3 className="text-7xl mb-4">⚠️</h3>
-            <p className="text-vermilion mb-3 text-center">{getPlayerError}</p>
-            <Button label="Retry" onClick={getPlayer} />
-          </div>
+          <ErrorModal error={getPlayerError} onClick={getPlayer} />
         )}
         {toast && (
           <Toast
