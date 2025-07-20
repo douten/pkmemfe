@@ -1,6 +1,7 @@
+import { Background } from "./Background";
+import { Game } from "./Game";
 import { Home } from "./Home";
 import { Lobby } from "./Lobby";
-import { Game } from "./Game";
 import { Rules } from "./Rules";
 
-export { Home, Lobby, Game, Rules };
+export { Background, Game, Home, Lobby, Rules };

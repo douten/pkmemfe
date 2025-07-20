@@ -9,7 +9,7 @@ import { useToast } from "./hooks/useToast";
 
 // components & styling
 import "./App.css";
-import { Home, Lobby, Game, Rules } from "./components/pages/index";
+import { Background, Game, Home, Lobby, Rules } from "./components/pages/index";
 import { ErrorModal, Toast, LoadingPlayerScreen } from "./components/index";
 
 // typing
@@ -63,43 +63,31 @@ function AppContent() {
   }, []);
 
   return (
-    <>
-      <div className={`bg ${animateBackground ? "" : "pause-scroll"}`}></div>
-      <div
-        className={`bg bg2 ${animateBackground ? "" : "pause-scroll"}`}
-      ></div>
-      <div
-        className={`bg-cover ${
-          !animateBackground
-            ? "h-dvh w-dvh sm:w-auto sm:h-auto sm:rounded-3xl"
-            : "rounded-3xl"
-        } backdrop-blur-md bg-white/35 shadow-xl ring-1 ring-black/5`}
-      >
-        {player && (
-          <GlobalContext.Provider value={contextValue}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/lobby" element={<Lobby />} />
-              <Route path="/game/:id" element={<Game />} />
-              <Route path="/rules" element={<Rules />} />
-            </Routes>
-          </GlobalContext.Provider>
-        )}
-        {!player && !getPlayerError && <LoadingPlayerScreen />}
-        {getPlayerError && (
-          <ErrorModal error={getPlayerError} onClick={getPlayer} />
-        )}
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            duration={toast.duration}
-            isVisible={isVisible}
-            onClose={hideToast}
-          />
-        )}
-      </div>
-    </>
+    <Background animateBackground={animateBackground}>
+      {player && (
+        <GlobalContext.Provider value={contextValue}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/lobby" element={<Lobby />} />
+            <Route path="/game/:id" element={<Game />} />
+            <Route path="/rules" element={<Rules />} />
+          </Routes>
+        </GlobalContext.Provider>
+      )}
+      {!player && !getPlayerError && <LoadingPlayerScreen />}
+      {getPlayerError && (
+        <ErrorModal error={getPlayerError} onClick={getPlayer} />
+      )}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          duration={toast.duration}
+          isVisible={isVisible}
+          onClose={hideToast}
+        />
+      )}
+    </Background>
   );
 }
 
