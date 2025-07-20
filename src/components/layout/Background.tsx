@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
+import { useLocation } from "react-router";
 
 interface BackgroundProps {
-  animateBackground: boolean;
   children: ReactNode;
 }
 
-export function Background({ animateBackground, children }: BackgroundProps) {
+export function Background({ children }: BackgroundProps) {
+  const location = useLocation();
+  const animateBackground = !location.pathname.startsWith("/game/");
+
   return (
     <>
       <div className={`bg ${animateBackground ? "" : "pause-scroll"}`}></div>

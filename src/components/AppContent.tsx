@@ -1,4 +1,3 @@
-import { useLocation } from "react-router";
 import { Routes, Route } from "react-router";
 
 // components
@@ -52,11 +51,8 @@ function AppManager() {
 }
 
 function AppContent() {
-  const location = useLocation();
-  const animateBackground = !location.pathname.startsWith("/game/");
-
   return (
-    <Background animateBackground={animateBackground}>
+    <Background>
       <GlobalProvider>
         <AppManager />
       </GlobalProvider>
