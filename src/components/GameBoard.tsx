@@ -49,7 +49,7 @@ export const GameBoard = ({
 
       <div className="game-content">
         {/* Game Grid */}
-        <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] mt-[30px] sm:mt-[60px]">
+        <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] mt-[50px] sm:mt-[70px]">
           {game.cards?.map((card, index) => (
             <div
               key={index}
