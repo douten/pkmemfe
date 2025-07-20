@@ -1,4 +1,4 @@
-import { Routes, Route, HashRouter } from "react-router";
+import { Routes, Route, HashRouter, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 
 // hooks & context
@@ -16,23 +16,22 @@ import { Toast } from "./components/Toast";
 // typing
 import type { PlayerInterface } from "./components/types";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const animateBackground = !location.pathname.startsWith("/game/");
+
   // START: CONTEXT SETUP
   const { actionCable } = useActionCable(import.meta.env.VITE_ACTION_CABLE_URL);
   const { subscribe, unsubscribe, send } = useChannel(actionCable);
   const [player, setPlayer] = useState<PlayerInterface | null>(null);
-  const [stopBg, setStopBg] = useState<boolean>(false);
   const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
   const { toast, isVisible, showToast, hideToast } = useToast();
 
   const contextValue = {
     player,
-    setPlayer,
     send,
     subscribe,
     unsubscribe,
-    stopBg,
-    setStopBg,
     showToast,
     hideToast,
   };
@@ -65,12 +64,14 @@ function App() {
   }, []);
 
   return (
-    <HashRouter>
-      <div className={`bg ${stopBg ? "pause-scroll" : ""}`}></div>
-      <div className={`bg bg2 ${stopBg ? "pause-scroll" : ""}`}></div>
+    <>
+      <div className={`bg ${animateBackground ? "" : "pause-scroll"}`}></div>
+      <div
+        className={`bg bg2 ${animateBackground ? "" : "pause-scroll"}`}
+      ></div>
       <div
         className={`bg-cover ${
-          stopBg
+          !animateBackground
             ? "h-dvh w-dvh sm:w-auto sm:h-auto sm:rounded-3xl"
             : "rounded-3xl"
         } backdrop-blur-md bg-white/35 shadow-xl ring-1 ring-black/5`}
@@ -96,7 +97,6 @@ function App() {
                 <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce"></div>
               </div>
             </div>
-            {/* <Button label="Retry" onClick={getPlayer} /> */}
           </div>
         )}
         {getPlayerError && (
@@ -116,6 +116,14 @@ function App() {
           />
         )}
       </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <HashRouter>
+      <AppContent />
     </HashRouter>
   );
 }

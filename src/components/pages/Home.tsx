@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import GlobalContext from "../../context/globalContext";
 import { GameForm } from "../GameForm";
 
@@ -8,11 +8,7 @@ export const Home = () => {
     throw new Error("ActionCableContext is not available");
   }
 
-  const { player, setStopBg } = context;
-
-  useEffect(() => {
-    setStopBg(false); // Ensure background animation is running on home page
-  }, [setStopBg]);
+  const { player } = context;
 
   return (
     <div className="flex flex-col w-[240px] aspect-[63/88] flex-wrap items-center h-full p-[10px]">

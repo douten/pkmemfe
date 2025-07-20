@@ -11,7 +11,7 @@ export const useGameChannel = (
     throw new Error("ActionCableContext is not available");
   }
 
-  const { subscribe, unsubscribe, send, setStopBg } = context;
+  const { subscribe, unsubscribe, send } = context;
   const [game, setGame] = useState<GameInterface | null>(null);
   const [opponentId, setOpponentId] = useState<string | null>(null);
   const [turnPlayerId, setTurnPlayerId] = useState<string | undefined>(
@@ -100,8 +100,6 @@ export const useGameChannel = (
   useEffect(() => {
     if (!gameId) return;
 
-    setStopBg(true);
-
     subscribe(
       {
         channel: "GamesChannel",
@@ -121,7 +119,6 @@ export const useGameChannel = (
   }, [
     gameId,
     cardImages.length,
-    setStopBg,
     subscribe,
     unsubscribe,
     handleChannelMessage,
