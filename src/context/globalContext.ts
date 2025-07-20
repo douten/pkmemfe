@@ -16,7 +16,7 @@ interface GlobalContextType {
   showToast: (config: ToastConfigInterface) => void;
   hideToast: () => void;
   toast: ToastConfigInterface | null;
-  isVisible: boolean;
+  isToastVisible: boolean;
 }
 
 const GlobalContext = createContext<GlobalContextType | null>(null);

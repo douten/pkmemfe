@@ -20,7 +20,7 @@ function GlobalProvider({ children }: GlobalProviderProps) {
   const { subscribe, unsubscribe, send } = useChannel(actionCable);
   const [player, setPlayer] = useState<PlayerInterface | null>(null);
   const [getPlayerError, setGetPlayerError] = useState<string | null>(null);
-  const { toast, isVisible, showToast, hideToast } = useToast();
+  const { toast, isToastVisible, showToast, hideToast } = useToast();
 
   const getPlayer = async () => {
     try {
@@ -59,7 +59,7 @@ function GlobalProvider({ children }: GlobalProviderProps) {
     showToast,
     hideToast,
     toast,
-    isVisible,
+    isToastVisible,
   };
 
   return (

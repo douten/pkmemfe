@@ -21,8 +21,14 @@ function AppRoutes() {
 }
 
 function AppManager() {
-  const { player, getPlayerError, getPlayer, toast, isVisible, hideToast } =
-    useGlobalContext();
+  const {
+    player,
+    getPlayerError,
+    getPlayer,
+    toast,
+    isToastVisible,
+    hideToast,
+  } = useGlobalContext();
 
   return (
     <>
@@ -36,7 +42,7 @@ function AppManager() {
           message={toast.message}
           type={toast.type}
           duration={toast.duration}
-          isVisible={isVisible}
+          isVisible={isToastVisible}
           onClose={hideToast}
         />
       )}

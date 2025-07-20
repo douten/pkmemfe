@@ -26,7 +26,7 @@ export const useToast = () => {
 
   return {
     toast,
-    isVisible,
+    isToastVisible: isVisible,
     showToast,
     hideToast,
   };
