@@ -2,6 +2,8 @@ import { Card } from "./Card";
 import { PlayerBadge } from "./PlayerBadge";
 import { ConcedeModal } from "./ConcedeModal";
 import type { GameInterface } from "./types";
+import { Toast } from "./Toast";
+import { useToast } from "../hooks/useToast";
 
 interface GameBoardProps {
   game: GameInterface;
@@ -21,10 +23,19 @@ export const GameBoard = ({
   onConcede,
 }: GameBoardProps) => {
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget.dataset.flipped === "true" || turnPlayerId !== playerId)
+    if (turnPlayerId !== playerId) {
+      showToast({
+        message: "Opponent's turn, please wait..",
+        type: "warning",
+        duration: 500,
+      });
       return;
+    }
+    if (e.currentTarget.dataset.flipped === "true") return;
     onFlipCard(e.currentTarget.id);
   };
+
+  const { toast, isVisible, showToast, hideToast } = useToast();
 
   const playerScore = game.players.find((p) => p.id === playerId)?.score || 0;
   const opponentScore = game.players.find((p) => p.id !== playerId)?.score || 0;
@@ -59,25 +70,33 @@ export const GameBoard = ({
 
         {/* Score Display with Turn Indicators */}
         <div className="w-full flex items-center gap-4 justify-center p-3 sm:mb-3">
-          <div className="flex flex-col items-center">
-            <span className="text-xs font-semibold h-4 text-left w-full">
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-sm h-4 text-left w-full text-black-text [font-variant:small-caps] pl-2">
               {isPlayerTurn ? "your turn" : ""}
             </span>
-            <div className="flex items-center gap-5">
+            <div
+              className={`flex items-center gap-2 ${
+                isPlayerTurn ? "bg-white/[0.7]" : "bg-white/[0.2]"
+              } py-2 px-4 rounded-xl transition-colors duration-300`}
+            >
               {playerId && <PlayerBadge playerId={playerId} size="sm" />}
               <span className="text-2xl text-black-text font-bold">
                 {playerScore}
               </span>
             </div>
           </div>
-          <span className="text-2xl font-bold text-black-text font-black self-end">
+          <span className="text-2xl font-bold text-black-text pb-2 font-black self-end">
             :
           </span>
-          <div className="flex flex-col items-center">
-            <span className="text-xs font-semibold h-4 text-right w-full">
+          <div className="flex flex-col items-center gap-1">
+            <span className="text-sm h-4 text-right w-full text-black-text [font-variant:small-caps] pr-2">
               {isOpponentTurn ? "opponent turn" : ""}
             </span>
-            <div className="flex items-center gap-5">
+            <div
+              className={`flex items-center gap-2 ${
+                isOpponentTurn ? "bg-white/[0.7]" : "bg-white/[0.2]"
+              } py-2 px-4 rounded-xl transition-colors duration-300`}
+            >
               <span className="text-2xl text-black-text font-bold">
                 {opponentScore}
               </span>
@@ -85,6 +104,20 @@ export const GameBoard = ({
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        {/* Your game content */}
+
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            isVisible={isVisible}
+            onClose={hideToast}
+          />
+        )}
       </div>
     </div>
   );
