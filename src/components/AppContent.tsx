@@ -2,7 +2,8 @@ import { useLocation } from "react-router";
 import { Routes, Route } from "react-router";
 
 // components
-import { Background, Game, Home, Lobby, Rules } from "./pages/index";
+import { Game, Home, Lobby, Rules } from "./pages/index";
+import { Background } from "@/components/layout/Background";
 import { ErrorModal, Toast, LoadingPlayerScreen } from "./index";
 import GlobalProvider from "./GlobalProvider";
 
