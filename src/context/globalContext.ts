@@ -6,6 +6,8 @@ import type { ToastConfigInterface } from "../hooks/useToast";
 
 interface GlobalContextType {
   player: PlayerInterface | null;
+  getPlayerError: string | null;
+  getPlayer: () => Promise<void>;
   // ActionCable channel functions
   send: ReturnType<typeof useChannel>["send"];
   subscribe: ReturnType<typeof useChannel>["subscribe"];
@@ -13,6 +15,8 @@ interface GlobalContextType {
   // Global Toast functions
   showToast: (config: ToastConfigInterface) => void;
   hideToast: () => void;
+  toast: ToastConfigInterface | null;
+  isVisible: boolean;
 }
 
 const GlobalContext = createContext<GlobalContextType | null>(null);
