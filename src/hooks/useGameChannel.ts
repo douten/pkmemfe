@@ -20,37 +20,42 @@ export const useGameChannel = (
   const [gameError, setGameError] = useState<string | null>(null);
   const [cardImages, setCardImages] = useState<string[]>([]);
 
-  const updateGameStates = (game: GameInterface) => {
-    setGame({ ...game });
-
-    const playerInPlayingGame =
-      game?.players.some((p) => p.id === playerId) && game.state !== "finished";
-
-    if (playerInPlayingGame) {
-      setTurnPlayerId(game.players.find((p) => p.can_flip)?.id);
-      setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
-    }
-  };
-
-  const handleMatchedCards = (matchedCards: string[], game: GameInterface) => {
-    matchedCards.forEach((cardId) => {
-      const el = document.getElementById(cardId.toString());
-      if (el) {
-        el.classList.add("card-out");
-        setTimeout(() => {
-          updateGameStates(game);
-          el.classList.remove("card-out");
-          el.classList.add("card-in");
-          setTimeout(() => {
-            el.classList.remove("card-in");
-          }, 800);
-        }, 1000);
-      }
-    });
-  };
-
   useEffect(() => {
     if (!gameId) return;
+    console.log("useChannelGame useEffect");
+
+    const updateGameStates = (game: GameInterface) => {
+      setGame({ ...game });
+
+      const playerInPlayingGame =
+        game?.players.some((p) => p.id === playerId) &&
+        game.state !== "finished";
+
+      if (playerInPlayingGame) {
+        setTurnPlayerId(game.players.find((p) => p.can_flip)?.id);
+        setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
+      }
+    };
+
+    const handleMatchedCards = (
+      matchedCards: string[],
+      game: GameInterface
+    ) => {
+      matchedCards.forEach((cardId) => {
+        const el = document.getElementById(cardId.toString());
+        if (el) {
+          el.classList.add("card-out");
+          setTimeout(() => {
+            updateGameStates(game);
+            el.classList.remove("card-out");
+            el.classList.add("card-in");
+            setTimeout(() => {
+              el.classList.remove("card-in");
+            }, 800);
+          }, 1000);
+        }
+      });
+    };
 
     setStopBg(true);
     subscribe(

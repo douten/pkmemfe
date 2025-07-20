@@ -1,9 +1,11 @@
 export const Button = ({
   label,
   onClick,
+  className = "",
 }: {
   label: string;
   onClick: () => void;
+  className?: string;
 }) => {
   const btnStyle = [
     "backdrop-blur-md",
@@ -22,6 +24,7 @@ export const Button = ({
     "w-full",
     "transition-all",
     "duration-450",
+    ...className.split(" "),
   ];
 
   return (
