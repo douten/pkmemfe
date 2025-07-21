@@ -48,7 +48,7 @@ export const Game = () => {
   }
 
   // Game finished
-  if (game.state === "finished") {
+  if (["finished", "abandoned"].includes(game.state)) {
     return (
       <GameFinished
         game={game}

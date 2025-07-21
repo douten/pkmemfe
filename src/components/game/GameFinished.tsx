@@ -26,6 +26,8 @@ export const GameFinished = ({
       <div className="flex flex-col items-center justify-center w-fit gap-8 p-8">
         <div className="text-2xl">Game #{game.id} results:</div>
 
+        {game.state === "abandoned" && <div>This game was abandoned 😶‍🌫️</div>}
+
         {game.winner && (
           <div className="text-lg h-full flex flex-col items-start justify-center gap-4">
             {game.players.map((p) => (

@@ -18,7 +18,7 @@ interface GamePlayerInterface {
 interface GameInterface {
   id: string;
   players: GamePlayerInterface[];
-  state: "matching" | "playing" | "finished" | "disconnected";
+  state: "matching" | "playing" | "finished" | "disconnected" | "abandoned";
   winner?: string | null;
   cards: CardInterface[];
 }
