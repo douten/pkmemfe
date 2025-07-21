@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useCallback } from "react";
 import GlobalContext from "../context/globalContext";
-import type { GameInterface } from "../components/types";
+import type { GameInterface } from "../types/types";
 
 export const useGameChannel = (
   gameId: string | undefined,

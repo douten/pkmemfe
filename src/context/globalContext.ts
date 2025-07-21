@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import useChannel from "../hooks/useChannel";
 
-import type { PlayerInterface } from "../components/types";
+import type { PlayerInterface } from "../types/types";
 import type { ToastConfigInterface } from "../hooks/useToast";
 
 interface GlobalContextType {

@@ -1,7 +1,7 @@
 import { Consumer, Subscription } from "@rails/actioncable";
 import { useEffect, useRef, useCallback } from "react";
 
-import type { GameInterface } from "../components/types";
+import type { GameInterface } from "../types/types";
 
 type Data = {
   channel: string;

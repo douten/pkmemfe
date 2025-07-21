@@ -1,4 +1,4 @@
-import type { PlayerInterface } from "@c/types";
+import type { PlayerInterface } from "@/types/types";
 import { useNavigate } from "react-router";
 
 import { Button } from "@ui/Button";

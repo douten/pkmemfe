@@ -7,7 +7,7 @@ import { ConcedeModal } from "@/components/game/ConcedeModal";
 import { useGlobalToast } from "@hooks/useGlobalToast";
 
 // types
-import type { GameInterface } from "@c/types";
+import type { GameInterface } from "@/types/types";
 
 interface GameBoardProps {
   game: GameInterface;

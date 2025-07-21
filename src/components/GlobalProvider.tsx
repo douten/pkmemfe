@@ -8,7 +8,7 @@ import GlobalContext from "../context/globalContext";
 import { useToast } from "../hooks/useToast";
 
 // types
-import type { PlayerInterface } from "./types";
+import type { PlayerInterface } from "../types/types";
 
 interface GlobalProviderProps {
   children: ReactNode;
