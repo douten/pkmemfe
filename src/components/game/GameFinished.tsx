@@ -23,7 +23,7 @@ export const GameFinished = ({
 
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 sm:my-3">
-      <div className="flex flex-col items-center justify-center w-fit gap-8 p-4">
+      <div className="flex flex-col items-center justify-center w-fit gap-8 p-8">
         <div className="text-2xl">Game #{game.id} results:</div>
 
         {game.winner && (
