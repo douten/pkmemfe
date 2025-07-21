@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router";
 
 // components
-import { Game, Home, Lobby, Rules } from "@/pages/index";
-import { Background } from "@/components/layout/Background";
+import { Game, Home, Lobby, Rules } from "@pages/index";
+import { Background } from "@layout/Background";
 import { ErrorModal, Toast, LoadingPlayerScreen } from "./index";
 import GlobalProvider from "./GlobalProvider";
 
 // hooks
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useGlobalContext } from "@hooks/useGlobalContext";
 
 function AppRoutes() {
   return (
