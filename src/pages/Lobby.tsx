@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import GlobalContext from "../context/globalContext";
-import { PlayerBadge } from "../components/PlayerBadge";
+import { PlayerBadge } from "../components/ui/PlayerBadge";
 import { Button } from "@ui/Button";
 
 export const Lobby = () => {

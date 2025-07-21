@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import GlobalContext from "../context/globalContext";
-import { GameForm } from "../components/GameForm";
+import { GameForm } from "@c/game/GameForm";
 
 export const Home = () => {
   const context = useContext(GlobalContext);

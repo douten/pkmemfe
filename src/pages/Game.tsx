@@ -5,14 +5,11 @@ import { useParams, useNavigate } from "react-router";
 import GlobalContext from "../context/globalContext";
 
 // hooks
-import { useGameChannel } from "../hooks/useGameChannel";
-import { useImagePreloader } from "../hooks/useImagePreloader";
+import { useGameChannel, useImagePreloader } from "@hooks/index";
 
 // components
-import { ErrorModal } from "../components/ErrorModal";
-import { GameFinished } from "../components/GameFinished";
-import { LoadingScreen } from "../components/LoadingScreen";
-import { GameBoard } from "../components/GameBoard";
+import { ErrorModal, LoadingScreen } from "@ui/index";
+import { GameFinished, GameBoard } from "@c/game/index";
 
 export const Game = () => {
   const { id: gameId } = useParams<{ id: string }>();

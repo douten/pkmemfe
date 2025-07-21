@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router";
 // components
 import { Game, Home, Lobby, Rules } from "@pages/index";
 import { Background } from "@layout/Background";
-import { ErrorModal, Toast, LoadingPlayerScreen } from "./index";
+import { ErrorModal, Toast, LoadingPlayerScreen } from "@ui/index";
 import GlobalProvider from "./GlobalProvider";
 
 // hooks

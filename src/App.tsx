@@ -1,7 +1,7 @@
 import { HashRouter } from "react-router";
 
 // components
-import AppContent from "@components/AppContent";
+import AppContent from "@c/AppContent";
 
 // styling
 import "./App.css";
