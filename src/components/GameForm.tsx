@@ -1,7 +1,7 @@
 import type { PlayerInterface } from "./types";
 import { useNavigate } from "react-router";
 
-import { Button } from "./Button";
+import { Button } from "@ui/Button";
 
 export const GameForm = ({ player }: { player: PlayerInterface }) => {
   const navigate = useNavigate();
