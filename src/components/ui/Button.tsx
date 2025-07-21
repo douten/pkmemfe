@@ -9,6 +9,7 @@ export const Button = ({
 }) => {
   const btnStyle = [
     "backdrop-blur-md",
+    "bg-white/60",
     "hover:bg-saffron",
     "hover:scale-x-105",
     "hover:text-white",

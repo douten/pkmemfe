@@ -7,6 +7,30 @@
   --color-saffron: #e3b505;
   --color-fuchsia: #574d68;
   --color-viridian: #33673b;
+  --color-indigo: #4b3f72;
+  --color-coral: #ff6f61;
+  --color-mint: #43e2b0;
+  --color-sky: #7fd8f5;
+  --color-slate: #6c7a89;
+  --color-peach: #ffb285;
+  --color-amber: #ffbf00;
+  --color-rose: #e63946;
+  --color-olive: #8bc34a;
+  --color-teal: #008080;
+  --color-lavender: #b497e7;
+  --color-silver: #c0c0c0;
+
+  --color-gray-50: #f9fafb; /* Good for backgrounds */
+  --color-gray-100: #f3f4f6; /* Good for backgrounds */
+  --color-gray-200: #e5e7eb; /* Good for backgrounds */
+  --color-gray-300: #d1d5db; /* Good for backgrounds */
+  --color-gray-400: #9ca3af; /* Good for muted text */
+  --color-gray-500: #6b7280; /* Good for readable text */
+  --color-gray-600: #4b5563; /* Good for readable text */
+  --color-gray-700: #374151; /* Good for readable text */
+  --color-gray-800: #1f2937; /* Good for readable text on light backgrounds */
+  --color-gray-900: #111827; /* Good for headings or high-contrast text */
+
   --color-gray: #b0b0b0;
   --color-white: #ffffff;
   --color-black: #000000;

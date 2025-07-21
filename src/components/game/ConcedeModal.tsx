@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "@ui/Button";
 
 interface ConcedeModalProps {
   onConcede: () => void;
@@ -49,7 +50,7 @@ export const ConcedeModal = ({ onConcede }: ConcedeModalProps) => {
       {/* Concede Modal */}
       {showModal && (
         <div className="absolute inset-0 bg-white/40 flex items-center justify-center grow z-50 sm:rounded-3xl">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-4">
+          <div className="bg-white/60 p-8 rounded-2xl shadow-lg max-w-sm mx-4">
             <h3 className="text-lg font-bold text-black-text mb-4">
               Concede Game...
             </h3>
@@ -57,18 +58,8 @@ export const ConcedeModal = ({ onConcede }: ConcedeModalProps) => {
               This will end the game and your opponent will win.
             </p>
             <div className="flex gap-3 justify-end">
-              <button
-                className="px-4 py-2 bg-gray text-white rounded hover:bg-black-text"
-                onClick={handleCancelConcede}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-vermilion text-white rounded hover:bg-red-600"
-                onClick={handleConfirmConcede}
-              >
-                Concede
-              </button>
+              <Button label="Cancel" onClick={handleCancelConcede} />
+              <Button label="Concede" onClick={handleConfirmConcede} />
             </div>
           </div>
         </div>
