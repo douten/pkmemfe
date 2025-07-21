@@ -1,6 +1,6 @@
 import { Button } from "@ui/Button";
-import { PlayerBadge } from "./PlayerBadge";
-import type { GameInterface } from "./types";
+import { PlayerBadge } from "@components/PlayerBadge";
+import type { GameInterface } from "@components/types";
 
 interface GameFinishedProps {
   game: GameInterface;

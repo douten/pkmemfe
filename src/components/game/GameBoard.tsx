@@ -1,13 +1,13 @@
 // components
 import { Card } from "@ui/Card";
-import { PlayerBadge } from "./PlayerBadge";
-import { ConcedeModal } from "./ConcedeModal";
+import { PlayerBadge } from "@components/PlayerBadge";
+import { ConcedeModal } from "@components/ConcedeModal";
 
 // hooks
-import { useGlobalToast } from "../hooks/useGlobalToast";
+import { useGlobalToast } from "@hooks/useGlobalToast";
 
 // types
-import type { GameInterface } from "./types";
+import type { GameInterface } from "@components/types";
 
 interface GameBoardProps {
   game: GameInterface;
