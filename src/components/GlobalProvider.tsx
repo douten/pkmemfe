@@ -46,8 +46,9 @@ function GlobalProvider({ children }: GlobalProviderProps) {
   };
 
   useEffect(() => {
+    if (player) return;
     getPlayer();
-  }, []);
+  }, [player]);
 
   const contextValue = {
     player,
