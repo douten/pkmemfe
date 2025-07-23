@@ -31,7 +31,12 @@ export const Lobby = () => {
     }
 
     subscribe(
-      { channel: "LobbyChannel", id: Date.now().toString() },
+      {
+        channel: "LobbyChannel",
+        id: `${playerId
+          ?.slice(-4)
+          .toLocaleUpperCase()}-${Date.now().toString()}`,
+      },
       {
         received: ({ lobby_channel: channel }) => {
           if (channel.opponent_id) {
@@ -47,7 +52,7 @@ export const Lobby = () => {
           // }
         },
         connected: () => {
-          send("get_lobby_stats", {});
+          // send("get_lobby_stats", {});
         },
       }
     );
@@ -76,7 +81,13 @@ export const Lobby = () => {
               <div className="h-[5px] w-[5px] bg-black-text rounded-full animate-bounce"></div>
             </div>
           </div>
-          <Button label="Cancel" onClick={() => navigate("/")} />
+          <Button
+            label="Cancel"
+            onClick={() => {
+              unsubscribe();
+              navigate("/");
+            }}
+          />
         </div>
       </div>
     </div>

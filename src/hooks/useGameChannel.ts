@@ -103,9 +103,13 @@ export const useGameChannel = (
     subscribe(
       {
         channel: "GamesChannel",
-        id: Date.now().toString(),
+        id: `${playerId
+          ?.slice(-4)
+          .toLocaleUpperCase()}-${Date.now().toString()}`,
         game_id: gameId,
-        get_images: cardImages.length === 0,
+        opts: {
+          images_array: cardImages.length === 0,
+        },
       },
       {
         received: handleChannelMessage,
@@ -116,14 +120,7 @@ export const useGameChannel = (
     return () => {
       unsubscribe();
     };
-  }, [
-    gameId,
-    cardImages.length,
-    subscribe,
-    unsubscribe,
-    handleChannelMessage,
-    handleChannelError,
-  ]);
+  }, []);
 
   const flipCard = (cardId: string) => {
     send("flip_card", {

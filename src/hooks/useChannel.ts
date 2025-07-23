@@ -6,8 +6,10 @@ import type { GameInterface } from "../types/types";
 type Data = {
   channel: string;
   id?: string;
-  get_images?: boolean;
   game_id?: string;
+  opts?: {
+    images_array?: boolean;
+  };
 };
 
 type Callbacks<T> = {
