@@ -73,8 +73,7 @@ export const ConcedeModal = ({
             }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 27,
+              duration: 0.3,
             }}
             className="absolute w-full h-full z-100 flex items-center justify-center"
           >
@@ -115,7 +114,7 @@ export const ConcedeModal = ({
                         you
                       </span>
                       <div
-                        className={`flex items-center gap-2 bg-white/[0.7] py-2 px-4 rounded-xl transition-colors duration-300`}
+                        className={`flex items-center gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300`}
                       >
                         {playerId && (
                           <PlayerBadge playerId={playerId} size="sm" />
@@ -133,7 +132,7 @@ export const ConcedeModal = ({
                         opponent
                       </span>
                       <div
-                        className={`flex items-center gap-2 bg-white/[0.7] py-2 px-4 rounded-xl transition-colors duration-300`}
+                        className={`flex items-center gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300`}
                       >
                         <span className="text-2xl text-black-text font-bold">
                           {opponentScore}

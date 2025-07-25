@@ -1,5 +1,5 @@
 // components
-import { Card } from "@ui/Card";
+import { Card, NotificationBadge } from "@ui/index";
 import { ConcedeModal } from "@/components/game/ConcedeModal";
 
 // hooks
@@ -50,26 +50,19 @@ export const GameBoard = ({
 
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative">
-      <div className="flex mx-4 mt-4 self-start items-start gap-2 h-[30px]">
+      <div className="game-content flex mx-4 mt-4 self-start items-start gap-2 h-[30px]">
         {!flippedCards.length && (
-          <div className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300">
-            <span className="text-sm text-black-text">
-              Waiting on {isPlayerTurn ? "your" : "opponent's"} flip
-            </span>
-          </div>
+          <NotificationBadge
+            message={`Waiting on ${isPlayerTurn ? "your" : "opponent's"} flip`}
+          />
         )}
         {flippedCards.length > 0 &&
           flippedCards.map((card) => (
-            <div
-              key={card.id}
-              className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300"
-            >
-              <span className="text-sm text-black-text">{card.name}</span>
-            </div>
+            <NotificationBadge key={card.id} message={card.name} />
           ))}
       </div>
 
-      <div className="game-content transition-filter duration-400">
+      <div className="game-content transition-filter duration-300">
         {/* Game Grid */}
         <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] my-4 sm:my-3">
           {cards?.map((card, index) => (

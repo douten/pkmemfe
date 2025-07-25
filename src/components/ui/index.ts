@@ -5,3 +5,4 @@ export { Button } from "./Button";
 export { Card } from "./Card";
 export { PlayerBadge } from "./PlayerBadge";
 export { LoadingScreen } from "./LoadingScreen";
+export { NotificationBadge } from "./NotificationBadge";
