@@ -5,10 +5,10 @@ interface PlayerInterface {
 
 interface CardInterface {
   id: string;
-  flipped: boolean;
   image_url: string | undefined;
   // indicates position in array(grid)
   position: number;
+  name: string;
 }
 
 interface GamePlayerInterface {

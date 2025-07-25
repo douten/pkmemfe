@@ -54,56 +54,32 @@ export const Toast = ({
       {isVisible && (
         <motion.div
           initial={{
-            y: -30,
-            opacity: 0.2,
-            scale: 0.5,
+            scale: 0,
           }}
           animate={{
-            y: 10,
-            opacity: 1,
             scale: 1,
+            opacity: 1,
           }}
           exit={{
-            y: 0,
-            opacity: 0,
-            scale: 0.5,
+            scale: 0,
+            opacity: 0.3,
           }}
           transition={{
             type: "spring",
             ease: [0.25, 0.46, 0.45, 0.94],
-            duration: 0.3,
+            duration: 0.4,
           }}
           style={{
             perspective: "1200px",
             transformStyle: "preserve-3d",
           }}
-          className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50"
+          className="fixed top-0 w-full h-full z-100 flex items-center justify-center"
         >
           <div
-            className={`${getToastColors()} backdrop-blur-sm ps-3 pe-6 py-2 rounded-lg shadow-lg w-max`}
+            className={`${getToastColors()} backdrop-blur-sm bg-white/80 px-6 py-4 rounded-lg shadow-lg w-max`}
           >
             <div className="flex items-center justify-between gap-3">
-              <button
-                onClick={handleClose}
-                className="text-current hover:opacity-75 transition-opacity"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 6L6 18M6 6L18 18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              <span className="text-sm font-medium">{message}</span>
+              <span className="text-md">{message}</span>
             </div>
           </div>
         </motion.div>

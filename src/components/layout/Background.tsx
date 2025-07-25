@@ -18,7 +18,7 @@ export function Background({ children }: BackgroundProps) {
       <div
         className={`bg-cover ${
           !animateBackground
-            ? "h-dvh w-dvh sm:w-auto sm:h-auto sm:rounded-3xl"
+            ? "h-full w-full sm:w-auto sm:h-auto sm:rounded-3xl"
             : "rounded-3xl"
         } backdrop-blur-md bg-white/35 shadow-xl ring-1 ring-black/5`}
       >

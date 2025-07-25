@@ -34,7 +34,7 @@ export const GameBoard = ({
     // Alert player it's not their turn
     if (turnPlayerId !== playerId) {
       showToast({
-        message: "Opponent's turn, please wait..",
+        message: "Opponent's turn, please wait...",
         type: "warning",
         duration: 1000,
       });
@@ -46,19 +46,17 @@ export const GameBoard = ({
     onFlipCard(e.currentTarget.id);
   };
 
-  const playerScore = game.players.find((p) => p.id === playerId)?.score || 0;
-  const opponentScore = game.players.find((p) => p.id !== playerId)?.score || 0;
-
-  const isPlayerTurn = turnPlayerId === playerId;
-  const isOpponentTurn = turnPlayerId === opponentId;
-
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative">
-      <ConcedeModal onConcede={onConcede} />
+      <div className="flex mx-4 mt-3 self-start items-start gap-2 h-[30px]">
+        {/* <div className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300">
+          <span className="text-sm text-black-text">Opponent's Turn</span>
+        </div> */}
+      </div>
 
       <div className="game-content">
         {/* Game Grid */}
-        <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] mt-[50px] sm:mt-[70px]">
+        <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] my-4 sm:my-3">
           {cards?.map((card, index) => (
             <div
               key={index}
@@ -76,44 +74,17 @@ export const GameBoard = ({
             </div>
           ))}
         </div>
-
-        {/* Score Display with Turn Indicators */}
-        <div className="w-full flex items-center gap-4 justify-center p-3 sm:mb-3">
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-sm h-4 text-left w-full text-black-text [font-variant:small-caps] pl-2">
-              {isPlayerTurn ? "your turn" : ""}
-            </span>
-            <div
-              className={`flex items-center gap-2 ${
-                isPlayerTurn ? "bg-white/[0.7]" : "bg-white/[0.2]"
-              } py-2 px-4 rounded-xl transition-colors duration-300`}
-            >
-              {playerId && <PlayerBadge playerId={playerId} size="sm" />}
-              <span className="text-2xl text-black-text font-bold">
-                {playerScore}
-              </span>
-            </div>
-          </div>
-          <span className="text-2xl font-bold text-black-text pb-2 font-black self-end">
-            :
-          </span>
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-sm h-4 text-right w-full text-black-text [font-variant:small-caps] pr-2">
-              {isOpponentTurn ? "opponent turn" : ""}
-            </span>
-            <div
-              className={`flex items-center gap-2 ${
-                isOpponentTurn ? "bg-white/[0.7]" : "bg-white/[0.2]"
-              } py-2 px-4 rounded-xl transition-colors duration-300`}
-            >
-              <span className="text-2xl text-black-text font-bold">
-                {opponentScore}
-              </span>
-              {opponentId && <PlayerBadge playerId={opponentId} size="sm" />}
-            </div>
-          </div>
-        </div>
       </div>
+
+      {turnPlayerId && game && playerId && opponentId && (
+        <ConcedeModal
+          onConcede={onConcede}
+          game={game}
+          turnPlayerId={turnPlayerId}
+          playerId={playerId}
+          opponentId={opponentId}
+        />
+      )}
     </div>
   );
 };

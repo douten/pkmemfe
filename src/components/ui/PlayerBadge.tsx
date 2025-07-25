@@ -17,7 +17,7 @@ export const PlayerBadge = ({
     <div
       className={`rounded-sm w-fit h-fit bg-viridian ${sizeClass} text-center text-white shadow-sm`}
     >
-      <span>PLAYER {displayId}</span>
+      <span className="whitespace-nowrap">PLAYER {displayId}</span>
     </div>
   );
 };
