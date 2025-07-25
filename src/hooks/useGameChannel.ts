@@ -87,7 +87,7 @@ export const useGameChannel = (
               // Update game state after all cards have faded out
               updateGameStates(game, newCardsToAdd, false);
               showToast(
-                `${playerId === game.playerTurnId ? "" : "Opponent"} + ${
+                `${playerId === game.playerTurnId ? "" : "Opponent"} +${
                   newCardsToAdd.length
                 } points!`,
                 1200
