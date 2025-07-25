@@ -11,6 +11,7 @@ import type { GameInterface, CardInterface } from "@/types/types";
 interface GameBoardProps {
   game: GameInterface;
   cards: CardInterface[];
+  flippedCards: CardInterface[];
   playerId: string | undefined;
   opponentId: string | null;
   turnPlayerId: string | undefined;
@@ -21,6 +22,7 @@ interface GameBoardProps {
 export const GameBoard = ({
   game,
   cards,
+  flippedCards,
   playerId,
   opponentId,
   turnPlayerId,
@@ -28,6 +30,7 @@ export const GameBoard = ({
   onConcede,
 }: GameBoardProps) => {
   const { showToast } = useGlobalToast();
+  const isPlayerTurn = turnPlayerId === playerId;
 
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Alert player it's not their turn
@@ -47,10 +50,23 @@ export const GameBoard = ({
 
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative">
-      <div className="flex mx-4 mt-3 self-start items-start gap-2 h-[30px]">
-        {/* <div className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300">
-          <span className="text-sm text-black-text">Opponent's Turn</span>
-        </div> */}
+      <div className="flex mx-4 mt-4 self-start items-start gap-2 h-[30px]">
+        {!flippedCards.length && (
+          <div className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300">
+            <span className="text-sm text-black-text">
+              Waiting on {isPlayerTurn ? "your" : "opponent's"} flip
+            </span>
+          </div>
+        )}
+        {flippedCards.length > 0 &&
+          flippedCards.map((card) => (
+            <div
+              key={card.id}
+              className="flex gap-2 bg-white/[0.7] py-1 px-3 rounded-xl transition-colors duration-300"
+            >
+              <span className="text-sm text-black-text">{card.name}</span>
+            </div>
+          ))}
       </div>
 
       <div className="game-content transition-filter duration-400">

@@ -26,6 +26,8 @@ export const useGameChannel = (
   const cardsRef = useRef(cards);
   // used for preloading card images
   const [cardImages, setCardImages] = useState<string[]>([]);
+  // to show card name badges
+  const [flippedCards, setFlippedCards] = useState<CardInterface[]>([]);
 
   // players & error states
   const [opponentId, setOpponentId] = useState<string | null>(null);
@@ -38,9 +40,18 @@ export const useGameChannel = (
     cardsRef.current = cards;
   }, [cards]);
 
-  const updateGameStates = (game: GameInterface, newCards: CardInterface[]) => {
+  const updateGameStates = (
+    game: GameInterface,
+    newCards: CardInterface[],
+    updateFlippedCard: boolean = true
+  ) => {
     setCards((prevCards) => {
       let updatedCards: CardInterface[] = [];
+      if (updateFlippedCard) {
+        setFlippedCards(newCards);
+      } else {
+        setFlippedCards([]);
+      }
       if (newCards.length > 0) {
         updatedCards = [...prevCards];
         newCards.forEach((newCard) => {
@@ -74,7 +85,7 @@ export const useGameChannel = (
           setTimeout(() => {
             if (index === newCardsToAdd.length - 1) {
               // Update game state after all cards have faded out
-              updateGameStates(game, newCardsToAdd);
+              updateGameStates(game, newCardsToAdd, false);
             }
             el.classList.remove("card-out");
             el.classList.add("card-in");
@@ -253,6 +264,7 @@ export const useGameChannel = (
     turnPlayerId,
     gameError,
     cardImages,
+    flippedCards,
     flipCard,
     concede,
   };
