@@ -86,6 +86,12 @@ export const useGameChannel = (
             if (index === newCardsToAdd.length - 1) {
               // Update game state after all cards have faded out
               updateGameStates(game, newCardsToAdd, false);
+              showToast(
+                `${playerId === game.playerTurnId ? "" : "Opponent"} + ${
+                  newCardsToAdd.length
+                } points!`,
+                1200
+              );
             }
             el.classList.remove("card-out");
             el.classList.add("card-in");
@@ -122,6 +128,13 @@ export const useGameChannel = (
         setTurnPlayerId(game.playerTurnId);
         setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
       }
+
+      showToast(
+        `Start Game: ${
+          game.playerTurnId === playerId ? "Your" : "Opponent's"
+        } turn!`,
+        1500
+      );
     },
     [playerId]
   );
@@ -178,33 +191,6 @@ export const useGameChannel = (
       if (turnResult) {
         handleTurnResult(game, turnResult);
       }
-
-      // TODO: Check the can_flip logic
-      // it used to be in player.can_flip
-      // but now it's in game.playerTurnId
-
-      // TODO: update toast logic below
-      // const hasTurn = game?.players.find((p) => p.can_flip)?.id === playerId;
-      // let toastMessage = "";
-      // if (firstFlip) {
-      //   toastMessage = `${hasTurn ? "You" : "Opponent"} flipped ${cardNames}!`;
-      // } else if (noMatch) {
-      //   toastMessage = `${
-      //     hasTurn ? "Your" : "Opponent's"
-      //   } turn. ${cardNames} did not match.`;
-      // } else if (allMatched) {
-      //   toastMessage = `${cardNames} matched! ${
-      //     hasTurn ? "You" : "Opponent"
-      //   } +${games_channel_response.matched_cards?.length} points!`;
-      // }
-
-      // if (toastMessage) {
-      //   context.showToast?.({
-      //     message: toastMessage,
-      //     type: "info",
-      //     duration: 1800,
-      //   }); // Show toast using context method
-      // }
     },
     [handleGameSetup, handleTurnResult]
   );
@@ -245,6 +231,14 @@ export const useGameChannel = (
       unsubscribe();
     };
   }, []);
+
+  const showToast = (message: string, duration: number = 1000) => {
+    context.showToast?.({
+      message: message,
+      type: "info",
+      duration,
+    }); // Show toast using context method
+  };
 
   const flipCard = (cardId: string) => {
     send("flip_card", {
