@@ -54,26 +54,29 @@ export const ConcedeModal = ({
         {showModal && (
           <motion.div
             initial={{
+              opacity: 0,
               scale: 0,
+              translateX: "45%",
+              translateY: "48%",
             }}
             animate={{
-              scale: 1,
               opacity: 1,
+              scale: 1,
+              translateX: "0%",
+              translateY: "0%",
             }}
             exit={{
+              opacity: 0,
               scale: 0,
-              opacity: 0.3,
+              translateX: "45%",
+              translateY: "48%",
             }}
             transition={{
               type: "spring",
-              ease: [0.25, 0.46, 0.45, 0.94],
-              duration: 0.3,
+              stiffness: 400,
+              damping: 27,
             }}
-            style={{
-              perspective: "1200px",
-              transformStyle: "preserve-3d",
-            }}
-            className="fixed top-0 w-full h-full z-100 flex items-center justify-center"
+            className="absolute w-full h-full z-100 flex items-center justify-center"
           >
             <div className="absolute flex items-center justify-center grow z-50 sm:rounded-3xl">
               <div className="bg-white/60 px-4 pb-4 rounded-2xl shadow-lg relative">
