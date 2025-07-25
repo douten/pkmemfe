@@ -53,7 +53,7 @@ export const GameBoard = ({
         </div> */}
       </div>
 
-      <div className="game-content">
+      <div className="game-content transition-filter duration-300">
         {/* Game Grid */}
         <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] my-4 sm:my-3">
           {cards?.map((card, index) => (
