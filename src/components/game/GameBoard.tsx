@@ -1,6 +1,5 @@
 // components
 import { Card } from "@ui/Card";
-import { PlayerBadge } from "@/components/ui/PlayerBadge";
 import { ConcedeModal } from "@/components/game/ConcedeModal";
 
 // hooks

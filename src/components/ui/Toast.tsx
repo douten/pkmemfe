@@ -42,13 +42,6 @@ export const Toast = ({
     }
   };
 
-  const handleClose = () => {
-    setShow(false);
-    if (onClose) {
-      setTimeout(onClose, 300);
-    }
-  };
-
   return (
     <AnimatePresence>
       {isVisible && (

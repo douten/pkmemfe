@@ -7,7 +7,7 @@ export const Button = ({
   label: string;
   onClick: () => void;
   className?: string;
-  type: "primary" | "secondary" | "warning";
+  type?: "primary" | "secondary" | "warning";
 }) => {
   const btnStyle = [
     "backdrop-blur-md",

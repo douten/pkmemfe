@@ -25,7 +25,6 @@ export const ConcedeModal = ({
   const opponentScore = game.players.find((p) => p.id !== playerId)?.score || 0;
 
   const isPlayerTurn = turnPlayerId === playerId;
-  const isOpponentTurn = turnPlayerId === opponentId;
 
   const handleCloseClick = () => {
     setShowModal(true);
