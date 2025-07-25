@@ -25,6 +25,7 @@ export const Game = () => {
 
   const {
     game,
+    cards,
     opponentId,
     turnPlayerId,
     gameError,
@@ -73,6 +74,7 @@ export const Game = () => {
   return (
     <GameBoard
       game={game}
+      cards={cards}
       playerId={playerId}
       opponentId={opponentId}
       turnPlayerId={turnPlayerId}

@@ -7,10 +7,11 @@ import { ConcedeModal } from "@/components/game/ConcedeModal";
 import { useGlobalToast } from "@hooks/useGlobalToast";
 
 // types
-import type { GameInterface } from "@/types/types";
+import type { GameInterface, CardInterface } from "@/types/types";
 
 interface GameBoardProps {
   game: GameInterface;
+  cards: CardInterface[];
   playerId: string | undefined;
   opponentId: string | null;
   turnPlayerId: string | undefined;
@@ -20,6 +21,7 @@ interface GameBoardProps {
 
 export const GameBoard = ({
   game,
+  cards,
   playerId,
   opponentId,
   turnPlayerId,
@@ -41,7 +43,6 @@ export const GameBoard = ({
 
     // Do nothing if card is already flipped
     if (e.currentTarget.dataset.flipped === "true") return;
-
     onFlipCard(e.currentTarget.id);
   };
 
@@ -58,16 +59,16 @@ export const GameBoard = ({
       <div className="game-content">
         {/* Game Grid */}
         <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] mt-[50px] sm:mt-[70px]">
-          {game.cards?.map((card, index) => (
+          {cards?.map((card, index) => (
             <div
               key={index}
               id={card.id}
               className="w-22 h-31 rounded-md"
-              data-flipped={card.flipped}
+              data-flipped={!!card.image_url}
               onClick={handleCardClick}
             >
               <Card
-                isFlipped={card.flipped}
+                isFlipped={!!card.image_url}
                 image_url={card.image_url}
                 width="100%"
                 height="100%"

@@ -7,12 +7,13 @@ interface CardInterface {
   id: string;
   flipped: boolean;
   image_url: string | undefined;
+  // indicates position in array(grid)
+  position: number;
 }
 
 interface GamePlayerInterface {
   id: string;
   score: number;
-  can_flip: boolean;
 }
 
 interface GameInterface {
@@ -20,7 +21,32 @@ interface GameInterface {
   players: GamePlayerInterface[];
   state: "matching" | "playing" | "finished" | "disconnected" | "abandoned";
   winner?: string | null;
-  cards: CardInterface[];
+  playerTurnId: string;
 }
 
-export type { PlayerInterface, CardInterface, GameInterface };
+interface GameTurnResultInterface {
+  cards_match_whole_set: boolean; // cards_match_whole_set
+  no_match: boolean; // no_match
+  first_flip: boolean; // first_flip
+  flipped_cards_name: string[]; // flipped_card_names
+  flipped_game_cards: CardInterface[]; // flipped_game_cards
+  new_cards_to_add?: CardInterface[]; // cards_to_update
+}
+
+// data to support GameChannel broadcast
+interface GameChannelBroadcastInterface {
+  game: GameInterface;
+  // inital cards to set up the board
+  init_cards?: CardInterface[];
+  // after each turn, shouldn't return init_cards and turn_result together
+  turn_result?: GameTurnResultInterface;
+  images_array?: string[]; // images_array
+}
+
+export type {
+  CardInterface,
+  GameChannelBroadcastInterface,
+  GameInterface,
+  GameTurnResultInterface,
+  PlayerInterface,
+};

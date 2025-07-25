@@ -1,14 +1,14 @@
 import { Consumer, Subscription } from "@rails/actioncable";
 import { useEffect, useRef, useCallback } from "react";
 
-import type { GameInterface } from "../types/types";
+import type { GameChannelBroadcastInterface } from "../types/types";
 
 type Data = {
   channel: string;
   id?: string;
   game_id?: string;
   opts?: {
-    images_array?: boolean;
+    init_game?: boolean;
   };
 };
 
@@ -27,13 +27,7 @@ interface ActionCableResponseInterface {
     opponent_id?: string;
     is_playing?: boolean;
   };
-  games_channel: {
-    game?: GameInterface;
-    images_array?: string[];
-    delay?: number;
-    error?: string;
-    matched_cards?: string[];
-  };
+  games_channel: GameChannelBroadcastInterface;
 }
 
 export default function useChannel(actionCable: Consumer) {
@@ -46,7 +40,6 @@ export default function useChannel(actionCable: Consumer) {
     console.log(`useChannel - INFO: Connecting to ${data.channel}`);
     const channel = actionCable.subscriptions.create(data, {
       received: (message: ActionCableResponseInterface) => {
-        console.log("useChannel - INFO: Received message:", message);
         if (callbacks.received) {
           callbacks.received(message);
         }
