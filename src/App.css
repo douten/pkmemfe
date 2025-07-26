@@ -49,6 +49,7 @@
   font-style: normal;
   overflow: hidden;
   position: relative;
+  color: var(--color-black-text);
 }
 
 html {

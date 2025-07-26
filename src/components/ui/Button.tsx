@@ -11,14 +11,14 @@ export const Button = ({
 }) => {
   const btnStyle = [
     "backdrop-blur-md",
-    "bg-white/60",
+    "bg-gray-100",
     `${type === "warning" ? "hover:bg-vermilion" : "hover:bg-saffron"}`,
     "hover:scale-x-105",
     "hover:text-white",
     "cursor-pointer",
     "hover:text-md",
     `${type === "warning" ? "text-vermilion" : "text-viridian"}`,
-    "font-bold",
+    "font-semibold",
     "uppercase",
     "rounded-lg",
     "py-2",

@@ -49,8 +49,8 @@ export const GameBoard = ({
   };
 
   return (
-    <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative w-fit">
-      <div className="game-content transition-filter duration-300 flex sm:mx-4 mt-4 self-start items-start gap-2 h-[30px]">
+    <div className="h-full flex items-center justify-center flex-col gap-1 relative w-fit">
+      <div className="flex sm:mx-4 mt-4 self-start items-start gap-2 h-[30px]">
         {!flippedCards.length && (
           <NotificationBadge
             message={`Waiting on ${
@@ -64,26 +64,24 @@ export const GameBoard = ({
           ))}
       </div>
 
-      <div className="game-content transition-filter duration-300">
-        {/* Game Grid */}
-        <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] my-4 sm:my-3">
-          {cards?.map((card, index) => (
-            <div
-              key={index}
-              id={card.id}
-              className="w-22 h-31 rounded-md"
-              data-flipped={!!card.image_url}
-              onClick={handleCardClick}
-            >
-              <Card
-                isFlipped={!!card.image_url}
-                image_url={card.image_url}
-                width="100%"
-                height="100%"
-              />
-            </div>
-          ))}
-        </div>
+      {/* Game Grid */}
+      <div className="sm:px-4 grid grid-cols-4 w-fit gap-[5px] my-4 sm:my-3">
+        {cards?.map((card, index) => (
+          <div
+            key={index}
+            id={card.id}
+            className="w-22 h-31 rounded-md"
+            data-flipped={!!card.image_url}
+            onClick={handleCardClick}
+          >
+            <Card
+              isFlipped={!!card.image_url}
+              image_url={card.image_url}
+              width="100%"
+              height="100%"
+            />
+          </div>
+        ))}
       </div>
 
       {turnPlayerId && game && playerId && opponentId && (
