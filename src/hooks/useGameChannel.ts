@@ -128,13 +128,6 @@ export const useGameChannel = (
         setTurnPlayerId(game.playerTurnId);
         setOpponentId(game.players.find((p) => p.id !== playerId)?.id || "");
       }
-
-      showToast(
-        `Start Game: ${
-          game.playerTurnId === playerId ? "Your" : "Opponent's"
-        } turn!`,
-        1500
-      );
     },
     [playerId]
   );

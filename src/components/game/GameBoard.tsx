@@ -49,11 +49,13 @@ export const GameBoard = ({
   };
 
   return (
-    <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative">
-      <div className="game-content transition-filter duration-300 flex mx-4 mt-4 self-start items-start gap-2 h-[30px]">
+    <div className="h-full flex items-center justify-center flex-col gap-1 overflow-hidden relative w-fit">
+      <div className="game-content transition-filter duration-300 flex sm:mx-4 mt-4 self-start items-start gap-2 h-[30px]">
         {!flippedCards.length && (
           <NotificationBadge
-            message={`Waiting on ${isPlayerTurn ? "your" : "opponent's"} flip`}
+            message={`Waiting on ${
+              isPlayerTurn ? "your" : "opponent's"
+            } flip..`}
           />
         )}
         {flippedCards.length > 0 &&

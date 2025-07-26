@@ -44,7 +44,7 @@ export const ConcedeModal = ({
     <>
       {/* Close/concede button */}
       <button
-        className="w-8 h-8 sm:mb-4 me-4 self-end bg-viridian/50 hover:bg-black-text rounded-full flex items-center justify-center text-white text-xs font-bold z-10"
+        className="w-8 h-8 sm:mb-4 cursor-pointer sm:me-4 self-end transition-colors text-viridian hover:text-white bg-white/50 hover:bg-viridian/50 rounded-full flex items-center justify-center text-xs font-bold z-10"
         onClick={handleCloseClick}
       >
         •••
