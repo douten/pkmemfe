@@ -53,9 +53,7 @@ export const GameBoard = ({
       <div className="flex sm:mx-4 mt-4 self-start items-start gap-2 h-[30px]">
         {!flippedCards.length && (
           <NotificationBadge
-            message={`Waiting on ${
-              isPlayerTurn ? "your" : "opponent's"
-            } flip..`}
+            message={isPlayerTurn ? "Your turn to flip.." : "Opponent's turn.."}
           />
         )}
         {flippedCards.length > 0 &&

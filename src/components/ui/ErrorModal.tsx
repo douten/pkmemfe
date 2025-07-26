@@ -8,7 +8,7 @@ interface ErrorModalProps {
 
 export const ErrorModal = ({
   error,
-  buttonLabel = "Retry",
+  buttonLabel = "Cancel",
   onClick,
 }: ErrorModalProps) => {
   return (
