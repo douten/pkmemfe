@@ -177,12 +177,21 @@ export const useGameChannel = (
         imagesArray &&
         imagesArray?.length > 0;
 
+      const isTerminalState = ["finished", "abandoned"].includes(game.state);
+
+      // First game start up 👶
       if (isSetupData) {
         handleGameSetup(game, initialCards, imagesArray);
       }
 
+      // Game progressing~
       if (turnResult) {
         handleTurnResult(game, turnResult);
+      }
+
+      // Game ended
+      if (isTerminalState) {
+        setGame(game);
       }
     },
     [handleGameSetup, handleTurnResult]
