@@ -39,6 +39,11 @@ interface GameTurnResultInterface {
   new_cards_to_add?: CardInterface[]; // cards_to_update
 }
 
+interface PlayerScoredCardsInterface {
+  player_id: string;
+  cards: CardInterface[];
+}
+
 // data to support GameChannel broadcast
 interface GameChannelBroadcastInterface {
   game?: GameInterface;
@@ -47,6 +52,7 @@ interface GameChannelBroadcastInterface {
   // after each turn, shouldn't return init_cards and turn_result together
   turn_result?: GameTurnResultInterface;
   images_array?: string[]; // images_array
+  scored_cards: PlayerScoredCardsInterface[];
 }
 
 export type {
@@ -55,4 +61,5 @@ export type {
   GameInterface,
   GameTurnResultInterface,
   PlayerInterface,
+  PlayerScoredCardsInterface,
 };

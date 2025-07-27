@@ -26,6 +26,7 @@ export const Game = () => {
   const {
     game,
     cards,
+    scoredCards,
     flippedCards,
     opponentId,
     turnPlayerId,
@@ -49,17 +50,6 @@ export const Game = () => {
     return <LoadingScreen message="Getting Game..." />;
   }
 
-  // Game finished
-  if (["finished", "abandoned", "conceded"].includes(game.state)) {
-    return (
-      <GameFinished
-        game={game}
-        playerId={playerId}
-        onBackToHome={handleBackToHome}
-      />
-    );
-  }
-
   // Loading images
   if (isLoading) {
     return (
@@ -67,6 +57,18 @@ export const Game = () => {
         message="Loading game..."
         progress={loadedImages.length}
         total={cardImages.length}
+      />
+    );
+  }
+
+  // Game finished
+  if (["finished", "abandoned", "conceded"].includes(game.state)) {
+    return (
+      <GameFinished
+        game={game}
+        scoredCards={scoredCards}
+        playerId={playerId}
+        onBackToHome={handleBackToHome}
       />
     );
   }

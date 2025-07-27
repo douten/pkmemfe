@@ -5,6 +5,7 @@ import type {
   GameChannelBroadcastInterface,
   CardInterface,
   GameTurnResultInterface,
+  PlayerScoredCardsInterface,
 } from "../types/types";
 
 export const useGameChannel = (
@@ -28,6 +29,10 @@ export const useGameChannel = (
   const [cardImages, setCardImages] = useState<string[]>([]);
   // to show card name badges
   const [flippedCards, setFlippedCards] = useState<CardInterface[]>([]);
+  // end game state to show player scored cards
+  const [scoredCards, setScoredCards] = useState<PlayerScoredCardsInterface[]>(
+    []
+  );
 
   // players & error states
   const [opponentId, setOpponentId] = useState<string | null>(null);
@@ -158,6 +163,26 @@ export const useGameChannel = (
     [handleMatchedCards]
   );
 
+  const handleEndGame = useCallback(
+    (
+      game: GameInterface,
+      scoredCards: PlayerScoredCardsInterface[],
+      imagesArray: string[]
+    ) => {
+      setGame(game);
+
+      // For when the player visit an already ended game.
+      // Cause images should be preloaded from
+      // handleGameSetup otherwise
+      if (imagesArray.length == 0) {
+        setCardImages(imagesArray);
+      }
+
+      setScoredCards(scoredCards);
+    },
+    []
+  );
+
   // Processes incoming WebSocket messages and updates game state or triggers animations
   const handleChannelMessage = useCallback(
     (data: { games_channel: GameChannelBroadcastInterface }) => {
@@ -171,6 +196,7 @@ export const useGameChannel = (
         game,
         images_array: imagesArray,
         turn_result: turnResult,
+        scored_cards: scoredCards,
       } = gc_response;
 
       const isSetupData =
@@ -181,7 +207,9 @@ export const useGameChannel = (
         imagesArray?.length > 0;
 
       const isTerminalState =
-        game && ["finished", "abandoned", "conceded"].includes(game.state);
+        game &&
+        ["finished", "abandoned", "conceded"].includes(game.state) &&
+        scoredCards.length > 0;
 
       // First game start up 👶
       if (isSetupData) {
@@ -194,8 +222,8 @@ export const useGameChannel = (
       }
 
       // Game ended
-      if (isTerminalState) {
-        setGame(game);
+      if (isTerminalState && imagesArray) {
+        handleEndGame(game, scoredCards, imagesArray);
       }
     },
     [handleGameSetup, handleTurnResult]
@@ -252,6 +280,7 @@ export const useGameChannel = (
   return {
     game,
     cards,
+    scoredCards,
     opponentId,
     turnPlayerId,
     gameError,
