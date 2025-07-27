@@ -49,7 +49,7 @@ export const GameBoard = ({
   };
 
   return (
-    <div className="h-full flex items-center justify-center flex-col gap-1 relative w-fit">
+    <div className="h-full flex items-center justify-center flex-col gap-1 relative w-fit mx-auto">
       <div className="flex sm:mx-4 mt-4 self-start items-start gap-2 h-[30px]">
         {!flippedCards.length && (
           <NotificationBadge

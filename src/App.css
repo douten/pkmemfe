@@ -40,24 +40,22 @@
 #root {
   align-items: center;
   display: flex;
-  height: 100dvh;
   justify-content: center;
-  width: 100dvw;
   font-family: "Work Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  overflow: hidden;
   position: relative;
   color: var(--color-black-text);
+  background: var(--color-saffron);
 }
 
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
+html,
+body,
+#root {
+  min-height: 100dvh;
+  height: auto;
+  background: var(--color-saffron);
 }
 
 .bg {

@@ -30,7 +30,7 @@ export const GameFinished = ({
 
   return (
     <div className="h-full flex items-center justify-center flex-col gap-1 sm:my">
-      <div className="flex flex-col items-center justify-center w-full p-8">
+      <div className="flex flex-col items-center justify-center w-full p-2 sm:p-8">
         <div className="text-2xl">Game {game.id}</div>
         <div className="text-md mb-6">{game.state.toUpperCase()}</div>
 
@@ -50,7 +50,7 @@ export const GameFinished = ({
           scoredCards.map((scored) => (
             <div
               key={scored.player_id}
-              className="flex flex-col self-start gap-2 bg-white/30 p-4 rounded-xl mb-6"
+              className="flex flex-col self-start gap-2 bg-white/30 p-4 rounded-xl mb-6 w-full"
             >
               <div className="flex gap-3 items-center">
                 <PlayerBadge playerId={scored.player_id} size="lg" />
@@ -61,10 +61,10 @@ export const GameFinished = ({
                   {scored.player_id === game.winner ? winnerEmoji : loserEmoji}
                 </span>
               </div>
-              <div className="flex flex-wrap w-94 justify-start gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {scored.cards.map((card) => (
                   <div
-                    className="aspect-[63/88] w-14 h-auto"
+                    className="aspect-[63/88] sm:w-20"
                     key={card.id}
                     onMouseEnter={() => {
                       setFlipped((f) => ({ ...f, [card.id]: false }));
