@@ -7,9 +7,6 @@ type Data = {
   channel: string;
   id?: string;
   game_id?: string;
-  opts?: {
-    init_game?: boolean;
-  };
 };
 
 type Callbacks<T> = {

@@ -41,8 +41,8 @@ export const useGameChannel = (
   }, [cards]);
 
   const updateGameStates = (
-    game: GameInterface,
     newCards: CardInterface[],
+    game?: GameInterface,
     updateFlippedCard: boolean = true
   ) => {
     setCards((prevCards) => {
@@ -68,8 +68,10 @@ export const useGameChannel = (
 
       return updatedCards;
     });
-    setGame(game);
-    setTurnPlayerId(game.playerTurnId);
+    if (game) {
+      setGame(game);
+      setTurnPlayerId(game.playerTurnId);
+    }
   };
 
   // Animates matched cards with fade-out/fade-in effect before updating game state
@@ -85,7 +87,7 @@ export const useGameChannel = (
           setTimeout(() => {
             if (index === newCardsToAdd.length - 1) {
               // Update game state after all cards have faded out
-              updateGameStates(game, newCardsToAdd, false);
+              updateGameStates(newCardsToAdd, game, false);
               showToast(
                 `${playerId === game.playerTurnId ? "" : "Opponent"} +${
                   newCardsToAdd.length
@@ -133,7 +135,7 @@ export const useGameChannel = (
   );
 
   const handleTurnResult = useCallback(
-    (game: GameInterface, turnResult: GameTurnResultInterface) => {
+    (turnResult: GameTurnResultInterface, game?: GameInterface) => {
       const {
         cards_match_whole_set: allMatched,
         no_match: noMatch,
@@ -146,11 +148,11 @@ export const useGameChannel = (
 
       if (noMatch && !firstFlip) {
         // Give a delay if there's no match for players to see
-        setTimeout(() => updateGameStates(game, flippedGameCards), 1200);
-      } else if (allMatched && newCardsToAdd) {
+        setTimeout(() => updateGameStates(flippedGameCards, game), 1200);
+      } else if (allMatched && newCardsToAdd && game) {
         handleMatchedCards(newCardsToAdd, game);
       } else {
-        updateGameStates(game, flippedGameCards);
+        updateGameStates(flippedGameCards, game);
       }
     },
     [handleMatchedCards]
@@ -172,14 +174,14 @@ export const useGameChannel = (
       } = gc_response;
 
       const isSetupData =
+        game &&
         initialCards &&
         initialCards.length === 16 &&
         imagesArray &&
         imagesArray?.length > 0;
 
-      const isTerminalState = ["finished", "abandoned", "conceded"].includes(
-        game.state
-      );
+      const isTerminalState =
+        game && ["finished", "abandoned", "conceded"].includes(game.state);
 
       // First game start up 👶
       if (isSetupData) {
@@ -188,7 +190,7 @@ export const useGameChannel = (
 
       // Game progressing~
       if (turnResult) {
-        handleTurnResult(game, turnResult);
+        handleTurnResult(turnResult, game);
       }
 
       // Game ended
@@ -209,13 +211,6 @@ export const useGameChannel = (
   useEffect(() => {
     if (!gameId) return;
 
-    const initGame = !game && cardImages.length === 0;
-    const opts: { init_game?: boolean } = {};
-
-    if (initGame) {
-      opts.init_game = true;
-    }
-
     subscribe(
       {
         channel: "GamesChannel",
@@ -223,7 +218,6 @@ export const useGameChannel = (
           ?.slice(-4)
           .toLocaleUpperCase()}-${Date.now().toString()}`,
         game_id: gameId,
-        opts,
       },
       {
         received: handleChannelMessage,

@@ -41,7 +41,7 @@ interface GameTurnResultInterface {
 
 // data to support GameChannel broadcast
 interface GameChannelBroadcastInterface {
-  game: GameInterface;
+  game?: GameInterface;
   // inital cards to set up the board
   init_cards?: CardInterface[];
   // after each turn, shouldn't return init_cards and turn_result together
