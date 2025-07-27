@@ -50,7 +50,7 @@ export const Game = () => {
   }
 
   // Game finished
-  if (["finished", "abandoned"].includes(game.state)) {
+  if (["finished", "abandoned", "conceded"].includes(game.state)) {
     return (
       <GameFinished
         game={game}

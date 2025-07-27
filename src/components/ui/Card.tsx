@@ -1,8 +1,6 @@
 import { motion, useSpring } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 
-// Learn more: https://www.framer.com/docs/guides/overrides/
-
 //Spring animation parameters
 const spring = {
   stiffness: 300,
@@ -44,8 +42,8 @@ export const Card = ({
     const elementCenterY = elementHeight / 2;
     const mouseX = event.clientY - elementRect.y - elementCenterY;
     const mouseY = event.clientX - elementRect.x - elementCenterX;
-    const degreeX = (mouseX / elementWidth) * 20; //The number is the rotation factor
-    const degreeY = (mouseY / elementHeight) * 20; //The number is the rotation factor
+    const degreeX = (mouseX / elementWidth) * 30; //The number is the rotation factor
+    const degreeY = (mouseY / elementHeight) * 30; //The number is the rotation factor
     setRotateXaxis(degreeX);
     setRotateYaxis(degreeY);
   };

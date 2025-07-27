@@ -19,7 +19,13 @@ interface GamePlayerInterface {
 interface GameInterface {
   id: string;
   players: GamePlayerInterface[];
-  state: "matching" | "playing" | "finished" | "disconnected" | "abandoned";
+  state:
+    | "matching"
+    | "playing"
+    | "finished"
+    | "disconnected"
+    | "abandoned"
+    | "conceded";
   winner?: string | null;
   playerTurnId: string;
 }

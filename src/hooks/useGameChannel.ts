@@ -177,7 +177,9 @@ export const useGameChannel = (
         imagesArray &&
         imagesArray?.length > 0;
 
-      const isTerminalState = ["finished", "abandoned"].includes(game.state);
+      const isTerminalState = ["finished", "abandoned", "conceded"].includes(
+        game.state
+      );
 
       // First game start up 👶
       if (isSetupData) {
