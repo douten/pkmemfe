@@ -14,7 +14,7 @@ export function Background({ children }: BackgroundProps) {
       <div
         className={`sm:my-4 ${
           !showHomeCard
-            ? "min-h-dvh sm:h-full w-full sm:w-auto sm:h-auto sm:rounded-3xl"
+            ? "min-h-dvh sm:min-h-auto sm:h-full w-full sm:w-auto sm:h-auto sm:rounded-3xl"
             : "rounded-3xl"
         } bg-white/35 shadow-xl ring-1 ring-black/5`}
       >

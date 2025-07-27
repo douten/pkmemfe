@@ -29,7 +29,7 @@ export const GameFinished = ({
   const [flipped, setFlipped] = useState<{ [id: string]: boolean }>({});
 
   return (
-    <div className="h-full flex items-center justify-center flex-col gap-1 sm:my">
+    <div className="h-full flex min-h-dvh sm:min-h-auto items-center justify-center flex-col gap-1 sm:my">
       <div className="flex flex-col items-center justify-center w-full p-2 sm:p-8">
         <div className="text-2xl">Game {game.id}</div>
         <div className="text-md mb-6">{game.state.toUpperCase()}</div>
