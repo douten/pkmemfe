@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router";
 
 // components
 import { Game, Home, Lobby, Rules } from "@pages/index";
-import { Background } from "@layout/Background";
+import { PageContainer } from "@layout/index";
 import { ErrorModal, Toast, LoadingPlayerScreen } from "@ui/index";
 import GlobalProvider from "./GlobalProvider";
 
@@ -52,11 +52,11 @@ function AppManager() {
 
 function AppContent() {
   return (
-    <Background>
+    <PageContainer>
       <GlobalProvider>
         <AppManager />
       </GlobalProvider>
-    </Background>
+    </PageContainer>
   );
 }
 

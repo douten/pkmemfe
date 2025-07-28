@@ -1,3 +1,3 @@
-import { Background } from "./Background";
+import { PageContainer } from "./PageContainer";
 
-export { Background };
+export { PageContainer };
