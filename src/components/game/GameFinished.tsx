@@ -20,7 +20,7 @@ export const GameFinished = ({
       ? ["👑", "🏆", "🥇", "😏", "😎", "🥳", "💅"][
           Math.floor(Math.random() * 7)
         ]
-      : ["💔", "😢", "😞", "😤", "🫥", "😡"][Math.floor(Math.random() * 6)];
+      : ["💔", "😞", "😤", "🫥"][Math.floor(Math.random() * 4)];
   };
 
   const winnerEmoji = useMemo(() => getRandomEmoji(true), []);
@@ -57,31 +57,42 @@ export const GameFinished = ({
                 <span className="text-2xl font-semibold tracking-widest">
                   {scored.cards.length}
                 </span>
-                <span className="text-xl">
-                  {scored.player_id === game.winner ? winnerEmoji : loserEmoji}
-                </span>
+                {game.state === "finished" && (
+                  <span className="text-xl">
+                    {scored.player_id === game.winner
+                      ? winnerEmoji
+                      : loserEmoji}
+                  </span>
+                )}
+                {game.state === "conceded" && (
+                  <span className="text-xl">
+                    {scored.player_id === game.playerTurnId ? "conceded" : ""}
+                  </span>
+                )}
               </div>
-              <div className="grid grid-cols-5 gap-2">
-                {scored.cards.map((card) => (
-                  <div
-                    className="aspect-[63/88] sm:w-20"
-                    key={card.id}
-                    onMouseEnter={() => {
-                      setFlipped((f) => ({ ...f, [card.id]: false }));
-                      setTimeout(() => {
-                        setFlipped((f) => ({ ...f, [card.id]: true }));
-                      }, 300);
-                    }}
-                  >
-                    <Card
-                      isFlipped={flipped[card.id] ?? true}
-                      image_url={card.image_url}
-                      width="100%"
-                      height="100%"
-                    />
-                  </div>
-                ))}
-              </div>
+              {scored.cards.length > 0 && (
+                <div className="grid grid-cols-5 gap-2">
+                  {scored.cards.map((card) => (
+                    <div
+                      className="aspect-[63/88] sm:w-20"
+                      key={card.id}
+                      onMouseEnter={() => {
+                        setFlipped((f) => ({ ...f, [card.id]: false }));
+                        setTimeout(() => {
+                          setFlipped((f) => ({ ...f, [card.id]: true }));
+                        }, 300);
+                      }}
+                    >
+                      <Card
+                        isFlipped={flipped[card.id] ?? true}
+                        image_url={card.image_url}
+                        width="100%"
+                        height="100%"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 
