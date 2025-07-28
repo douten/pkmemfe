@@ -13,6 +13,7 @@ interface GameFinishedProps {
 export const GameFinished = ({
   game,
   scoredCards,
+  playerId,
   onBackToHome,
 }: GameFinishedProps) => {
   const getRandomEmoji = (isWinner: boolean) => {
@@ -40,7 +41,7 @@ export const GameFinished = ({
               key={scored.player_id}
               className="flex flex-col self-start gap-2 bg-white/30 p-4 rounded-xl mb-6 w-full"
             >
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center relative">
                 <PlayerBadge playerId={scored.player_id} size="lg" />
                 <span className="text-2xl font-semibold tracking-widest">
                   {scored.cards.length}
@@ -56,6 +57,9 @@ export const GameFinished = ({
                   <span className="text-xl">
                     {scored.player_id === game.playerTurnId ? "conceded" : ""}
                   </span>
+                )}
+                {playerId == scored.player_id && (
+                  <span className="text-xs tracking-widest">(YOU)</span>
                 )}
               </div>
               {scored.cards.length > 0 && (

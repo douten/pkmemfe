@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useCallback, useRef } from "react";
-import GlobalContext from "../context/globalContext";
+import GlobalContext from "@/context/globalContext";
 import type {
   GameInterface,
   GameChannelBroadcastInterface,
@@ -179,6 +179,8 @@ export const useGameChannel = (
       }
 
       setScoredCards(scoredCards);
+
+      context.getPlayer();
     },
     []
   );

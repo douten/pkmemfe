@@ -1,10 +1,13 @@
 import type { PlayerInterface } from "@/types/types";
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import GlobalContext from "@/context/globalContext";
 
 import { Button } from "@ui/Button";
 
 export const GameForm = ({ player }: { player: PlayerInterface }) => {
   const navigate = useNavigate();
+  const context = useContext(GlobalContext);
 
   const concedeGame = async () => {
     if (!player.game_id) return;
@@ -17,8 +20,8 @@ export const GameForm = ({ player }: { player: PlayerInterface }) => {
       }
     );
     const data = await response.json();
-    if (data.status === "success") {
-      window.location.reload();
+    if (data.status === "success" && context) {
+      context.getPlayer();
     }
   };
 
