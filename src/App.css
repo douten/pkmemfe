@@ -47,7 +47,11 @@
   font-style: normal;
   position: relative;
   color: var(--color-black-text);
-  background: var(--color-saffron);
+  background-image: url("data:image/svg+xml,%3Csvg width='1' height='1' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='7,1 3,9 7,9 5,15 13,6 9,6 11,1' fill='rgba(255,255,255,0.35)'/%3E%3C/svg%3E"),
+    linear-gradient(#e3b505, #e3b505);
+  background-repeat: repeat, no-repeat;
+  background-size: 40px 40px, cover;
+  background-blend-mode: overlay, normal;
 }
 
 html,
@@ -55,7 +59,6 @@ body,
 #root {
   min-height: 100dvh;
   height: auto;
-  background: var(--color-saffron);
 }
 
 .bg {

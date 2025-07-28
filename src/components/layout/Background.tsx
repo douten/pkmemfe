@@ -16,7 +16,7 @@ export function Background({ children }: BackgroundProps) {
           !showHomeCard
             ? "min-h-dvh sm:min-h-auto sm:h-full w-full sm:w-auto sm:h-auto sm:rounded-3xl"
             : "rounded-3xl"
-        } bg-white/35 shadow-xl ring-1 ring-black/5`}
+        } bg-white/35 backdrop-blur-[3px] shadow-xl ring-1 ring-black/5`}
       >
         {children}
       </div>
