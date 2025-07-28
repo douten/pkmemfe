@@ -47,8 +47,7 @@
   font-style: normal;
   position: relative;
   color: var(--color-black-text);
-  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='7,1 3,9 7,9 5,15 13,6 9,6 11,1' fill='rgba(255,255,255,0.35)'/%3E%3Cpolygon points='47,41 43,49 47,49 45,55 53,46 49,46 51,41' fill='rgba(255,255,255,0.35)'/%3E%3C/svg%3E"),
-    linear-gradient(#e3b505, #e3b505);
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='7,1 3,9 7,9 5,15 13,6 9,6 11,1' fill='rgba(255,255,255,0.35)'/%3E%3Cpolygon points='47,41 43,49 47,49 45,55 53,46 49,46 51,41' fill='rgba(255,255,255,0.35)'/%3E%3C/svg%3E");
   background-repeat: repeat, no-repeat;
   background-size: 40px 40px, cover;
   background-blend-mode: overlay, normal;
@@ -59,68 +58,7 @@ body,
 #root {
   min-height: 100dvh;
   height: auto;
-}
-
-.bg {
-  animation: scroll-back 170s linear infinite;
-  animation-fill-mode: forwards;
-  background: url("/tile_back.png") repeat;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  opacity: 0.3;
-  z-index: -3;
-  right: -440px;
-  /* gaussian-blur: 10px; */
-  filter: blur(8px);
-  transition: opacity 1s ease-in-out, filter 1s ease-in-out;
-}
-
-.bg2 {
-  /* animation: 10s infinite slid; */
-  z-index: -2;
-  animation: scroll-front 190s linear infinite reverse;
-  animation-fill-mode: forwards;
-  background: url("/tile_front.png") repeat;
-  opacity: 0.4;
-  filter: none;
-  padding: 440px;
-  left: -440px;
-  transform: scale(1);
-  transition: filter 1s ease-in-out, opacity 1s ease-in-out;
-}
-
-.pause-scroll {
-  animation-play-state: paused;
-}
-
-.bg.pause-scroll {
-  filter: blur(35px);
-  opacity: 0.4;
-}
-
-.bg2.pause-scroll {
-  filter: blur(20px);
-  opacity: 0.5;
-}
-
-@keyframes scroll-back {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-440px);
-  }
-}
-
-@keyframes scroll-front {
-  0% {
-    transform: translateX(440px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  background-color: #e3b505;
 }
 
 @keyframes card-out {

@@ -92,12 +92,15 @@ export const useGameChannel = (
           setTimeout(() => {
             if (index === newCardsToAdd.length - 1) {
               // Update game state after all cards have faded out
-              updateGameStates(newCardsToAdd, game, false);
+              if (game.state === "playing") {
+                // otherwise will be handled in handleEndGame
+                updateGameStates(newCardsToAdd, game, false);
+              }
               showToast(
                 `${playerId === game.playerTurnId ? "" : "Opponent"} +${
                   newCardsToAdd.length
                 } points!`,
-                1200
+                800
               );
             }
             el.classList.remove("card-out");
@@ -211,7 +214,7 @@ export const useGameChannel = (
       const isTerminalState =
         game &&
         ["finished", "abandoned", "conceded"].includes(game.state) &&
-        scoredCards.length > 0;
+        scoredCards?.length > 0;
 
       // First game start up 👶
       if (isSetupData) {
@@ -225,7 +228,14 @@ export const useGameChannel = (
 
       // Game ended
       if (isTerminalState && imagesArray) {
-        handleEndGame(game, scoredCards, imagesArray);
+        if (turnResult) {
+          // give delay for animation before showing end game
+          setTimeout(() => {
+            handleEndGame(game, scoredCards, imagesArray);
+          }, 2000);
+        } else {
+          handleEndGame(game, scoredCards, imagesArray);
+        }
       }
     },
     [handleGameSetup, handleTurnResult]
