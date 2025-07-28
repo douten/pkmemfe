@@ -29,22 +29,10 @@ export const GameFinished = ({
   const [flipped, setFlipped] = useState<{ [id: string]: boolean }>({});
 
   return (
-    <div className="h-full flex min-h-dvh sm:min-h-auto items-center justify-center flex-col gap-1 sm:my">
-      <div className="flex flex-col items-center justify-center w-full p-2 sm:p-8">
+    <div className="h-full w-full flex min-h-dvh sm:min-h-auto items-center justify-center flex-col gap-1 sm:my">
+      <div className="flex flex-col items-center justify-center w-full p-4 sm:p-6">
         <div className="text-2xl">Game {game.id}</div>
         <div className="text-md mb-6">{game.state.toUpperCase()}</div>
-
-        {/* {game.winner && (
-          <div className="text-lg h-full flex flex-col items-start justify-center gap-4">
-            {game.players.map((p) => (
-              <div key={p.id} className="flex items-center gap-2">
-                {getRandomEmoji(p.id === game.winner)}{" "}
-                <PlayerBadge playerId={p.id} size="lg" />
-                {playerId && p.id === playerId ? "(you)" : <div>&nbsp;</div>}
-              </div>
-            ))}
-          </div>
-        )} */}
 
         {scoredCards &&
           scoredCards.map((scored) => (

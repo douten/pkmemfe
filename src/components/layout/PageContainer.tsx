@@ -24,7 +24,7 @@ export function PageContainer({ children }: PageContainerProps) {
           showFullContainer
             ? `${fullContainerClasses} ${desktopContainerClasses}`
             : "rounded-3xl"
-        } bg-white/35 backdrop-blur-[3px] shadow-xl ring-1 ring-black/5 sm:my-4`}
+        } bg-white/50 shadow-xl ring-1 ring-black/5 sm:my-4`}
       >
         {children}
       </div>

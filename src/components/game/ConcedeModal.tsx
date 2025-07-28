@@ -56,28 +56,21 @@ export const ConcedeModal = ({
             initial={{
               opacity: 0,
               scale: 0,
-              translateX: "45%",
-              translateY: "48%",
             }}
             animate={{
               opacity: 1,
               scale: 1,
-              translateX: "0%",
-              translateY: "0%",
             }}
             exit={{
               opacity: 0,
               scale: 0,
-              translateX: "45%",
-              translateY: "48%",
             }}
             transition={{
-              type: "spring",
-              duration: 0.3,
+              duration: 0.15,
             }}
-            className="absolute w-screen h-screen z-100 flex items-center justify-center backdrop-blur-sm"
+            className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-sm"
           >
-            <div className="bg-white px-4 pb-4 rounded-2xl shadow-lg shadow-2xl relative max-w-[350px]">
+            <div className="bg-white px-4 pb-4 rounded-2xl shadow-sm relative max-w-[350px]">
               <button
                 className="absolute top-2 left-2 w-6 h-6 hover:bg-gray-50 rounded-full flex items-center justify-center text-white text-sm font-bold z-10"
                 onClick={handleCancelConcede}
