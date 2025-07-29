@@ -191,7 +191,9 @@ export const useGameChannel = (
   // Processes incoming WebSocket messages and updates game state or triggers animations
   const handleChannelMessage = useCallback(
     (data: { games_channel: GameChannelBroadcastInterface }) => {
-      console.log("Received data:", data);
+      if (import.meta.env.DEV) {
+        console.log("Received data:", data);
+      }
 
       const { games_channel: gc_response } = data;
 

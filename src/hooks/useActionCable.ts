@@ -6,7 +6,6 @@ const useActionCable = (url: string) => {
 
   useEffect(() => {
     return () => {
-      console.log("Disconnect Action Cable");
       actionCable.disconnect();
     };
   }, [actionCable]);

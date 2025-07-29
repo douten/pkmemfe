@@ -34,7 +34,9 @@ export default function useChannel(actionCable: Consumer) {
     data: Data,
     callbacks: Callbacks<ActionCableResponseInterface>
   ) => {
-    console.log(`useChannel - INFO: Connecting to ${data.channel}`);
+    if (import.meta.env.DEV) {
+      console.log(`useChannel - INFO: Connecting to ${data.channel}`);
+    }
     const channel = actionCable.subscriptions.create(data, {
       received: (message: ActionCableResponseInterface) => {
         if (callbacks.received) {
@@ -67,9 +69,12 @@ export default function useChannel(actionCable: Consumer) {
 
   const unsubscribe = useCallback(() => {
     if (channelRef.current) {
-      console.log(
-        "useChannel - INFO: Unsubscribing from " + channelRef.current.identifier
-      );
+      if (import.meta.env.DEV) {
+        console.log(
+          "useChannel - INFO: Unsubscribing from " +
+            channelRef.current.identifier
+        );
+      }
       channelRef.current.unsubscribe();
       channelRef.current = null;
     }
