@@ -24,6 +24,7 @@ export const Button = ({
     "py-2",
     "px-4",
     "text-sm",
+    "max-w-2xs",
     "w-full",
     "transition-all",
     "duration-450",

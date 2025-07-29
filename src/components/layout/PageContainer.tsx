@@ -23,7 +23,7 @@ export function PageContainer({ children }: PageContainerProps) {
         className={`${
           showFullContainer
             ? `${fullContainerClasses} ${desktopContainerClasses}`
-            : "rounded-3xl"
+            : "rounded-3xl mx-4"
         } bg-white/50 shadow-xl ring-1 ring-black/5 sm:my-4`}
       >
         {children}

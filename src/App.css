@@ -37,6 +37,16 @@
   --color-black-text: #545454;
 }
 
+@utility scrollbar-hidden {
+  /* Hide scrollbar for all browsers */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 #root {
   align-items: center;
   display: flex;
